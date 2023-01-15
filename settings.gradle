@@ -1,5 +1,37 @@
-include ':IconLoader'
-project(':IconLoader').projectDir = new File(rootDir, 'iconloaderlib')
+pluginManagement {
+    repositories {
+        google()
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+        maven { url "https://maven.aliyun.com/repository/public" }
+    }
+}
 
-include ':SharedLibWrapper'
-project(':SharedLibWrapper').projectDir = new File(rootDir, 'SharedLibWrapper')
+include ':IconLoader'
+project(':IconLoader').projectDir = new File(rootDir, 'platform_frameworks_libs_systemui/iconloaderlib')
+
+include ':searchuilib'
+project(':searchuilib').projectDir = new File(rootDir, 'platform_frameworks_libs_systemui/searchuilib')
+
+
+// SystemUI shared dependencies
+include ':wm_shell'
+project(':wm_shell').projectDir = new File('platform_frameworks_base/libs/WindowManager/Shell')
+include ':SystemUIAnimation'
+project(':SystemUIAnimation').projectDir = new File('platform_frameworks_base/packages/SystemUI/animation')
+include ':SystemUIPlugin'
+project(':SystemUIPlugin').projectDir = new File('platform_frameworks_base/packages/SystemUI/plugin')
+include ':PluginCore'
+project(':PluginCore').projectDir = new File('platform_frameworks_base/packages/SystemUI/plugin_core')
+include ':SystemUIShared'
+project(':SystemUIShared').projectDir = new File('platform_frameworks_base/packages/SystemUI/shared')
+include ':SystemUIUnfold'
+project(':SystemUIUnfold').projectDir = new File('platform_frameworks_base/packages/SystemUI/unfold')
