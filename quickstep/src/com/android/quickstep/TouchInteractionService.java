@@ -523,9 +523,13 @@ public class TouchInteractionService extends Service
                     getString(R.string.all_apps_label),
                     PendingIntent.getActivity(this, SYSTEM_ACTION_ID_ALL_APPS, intent,
                             PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE));
-            am.registerSystemAction(allAppsAction, SYSTEM_ACTION_ID_ALL_APPS);
+            if (Utilities.ATLEAST_R) {
+                am.registerSystemAction(allAppsAction, SYSTEM_ACTION_ID_ALL_APPS);
+            }
         } else {
-            am.unregisterSystemAction(SYSTEM_ACTION_ID_ALL_APPS);
+            if (Utilities.ATLEAST_R) {
+                am.unregisterSystemAction(SYSTEM_ACTION_ID_ALL_APPS);
+            }
         }
 
         StatefulActivity newOverviewActivity = mOverviewComponentObserver.getActivityInterface()

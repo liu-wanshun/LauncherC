@@ -40,6 +40,7 @@ androidx-room-rxjava2 = { module = "androidx.room:room-rxjava2", version.ref = "
 androidx-room-rxjava3 = { module = "androidx.room:room-rxjava3", version.ref = "androidx-room" }
 androidx-slice-view = "androidx.slice:slice-view:1.0.0"
 androidx-startup-runtime = "androidx.startup:startup-runtime:1.1.1"
+androidx-window = "androidx.window:window:1.0.0"
 
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }

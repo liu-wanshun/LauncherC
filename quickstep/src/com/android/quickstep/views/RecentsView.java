@@ -5427,6 +5427,7 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
 
     /** Update the current activity locus id to show the enabled state of Overview */
     public void updateLocusId() {
+        if (!Utilities.ATLEAST_R) return;
         String locusId = "Overview";
 
         if (mOverviewStateEnabled && mActivity.isStarted()) {

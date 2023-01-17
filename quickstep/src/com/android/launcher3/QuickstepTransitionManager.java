@@ -1151,7 +1151,9 @@ public class QuickstepTransitionManager implements OnDeviceProfileChangeListener
             return;
         }
         if (hasControlRemoteAppTransitionPermission()) {
-            mLauncher.unregisterRemoteAnimations();
+            if (Utilities.ATLEAST_R) {
+                mLauncher.unregisterRemoteAnimations();
+            }
 
             // Also clear strong references to the runners registered with the remote animation
             // definition so we don't have to wait for the system gc
@@ -1180,6 +1182,11 @@ public class QuickstepTransitionManager implements OnDeviceProfileChangeListener
 
     private boolean launcherIsATargetWithMode(RemoteAnimationTargetCompat[] targets, int mode) {
         for (RemoteAnimationTargetCompat target : targets) {
+            if (!Utilities.ATLEAST_S) {
+                if (target.mode == mode && target.taskId == mLauncher.getTaskId()) {
+                    return true;
+                }
+            }
             if (target.mode == mode && target.taskInfo != null
                     // Compare component name instead of task-id because transitions will promote
                     // the target up to the root task while getTaskId returns the leaf.
@@ -1930,7 +1937,7 @@ public class QuickstepTransitionManager implements OnDeviceProfileChangeListener
     private static class MyDepthController extends DepthController {
         MyDepthController(Launcher l) {
             super(l);
-            setCrossWindowBlursEnabled(
+            setCrossWindowBlursEnabled(Utilities.ATLEAST_S&&
                     CrossWindowBlurListeners.getInstance().isCrossWindowBlurEnabled());
         }
 

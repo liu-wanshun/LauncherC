@@ -621,8 +621,10 @@ public abstract class AbsSwipeUpHandler<T extends StatefulActivity<S>,
 
         Object traceToken = TraceHelper.INSTANCE.beginSection("logToggleRecents",
                 TraceHelper.FLAG_IGNORE_BINDERS);
-        LatencyTracker.getInstance(mContext).logAction(LatencyTracker.ACTION_TOGGLE_RECENTS,
-                (int) (mLauncherFrameDrawnTime - mTouchTimeMs));
+        if (Utilities.ATLEAST_S) {
+            LatencyTracker.getInstance(mContext).logAction(LatencyTracker.ACTION_TOGGLE_RECENTS,
+                    (int) (mLauncherFrameDrawnTime - mTouchTimeMs));
+        }
         TraceHelper.INSTANCE.endSection(traceToken);
 
         // This method is only called when STATE_GESTURE_STARTED is set, so we can enable the

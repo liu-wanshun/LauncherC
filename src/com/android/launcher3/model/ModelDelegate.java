@@ -24,6 +24,7 @@ import androidx.annotation.WorkerThread;
 
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.R;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.shortcuts.ShortcutKey;
 import com.android.launcher3.util.ResourceBasedOverride;
 
@@ -42,6 +43,11 @@ public class ModelDelegate implements ResourceBasedOverride {
     public static ModelDelegate newInstance(
             Context context, LauncherAppState app, AllAppsList appsList, BgDataModel dataModel,
             boolean isPrimaryInstance) {
+        if (!Utilities.ATLEAST_R) {
+            ModelDelegate delegate = new ModelDelegate();
+            delegate.init(context, app, appsList, dataModel, isPrimaryInstance);
+            return delegate;
+        }
         ModelDelegate delegate = Overrides.getObject(
                 ModelDelegate.class, context, R.string.model_delegate_class);
         delegate.init(context, app, appsList, dataModel, isPrimaryInstance);

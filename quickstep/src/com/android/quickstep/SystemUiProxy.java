@@ -429,7 +429,7 @@ public class SystemUiProxy implements ISystemUiProxy {
     @Override
     public void handleImageBundleAsScreenshot(Bundle screenImageBundle, Rect locationInScreen,
             Insets visibleInsets, Task.TaskKey task) {
-        if (mSystemUiProxy != null) {
+        if (mSystemUiProxy != null && Utilities.ATLEAST_S) {
             try {
                 mSystemUiProxy.handleImageBundleAsScreenshot(screenImageBundle, locationInScreen,
                     visibleInsets, task);

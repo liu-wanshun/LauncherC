@@ -220,6 +220,7 @@ dependencies {
     implementation libs.google.protobuf.javalite
     implementation libs.google.material
     implementation libs.androidx.slice.view
+    implementation(libs.androidx.window)
 }
 
 protobuf {

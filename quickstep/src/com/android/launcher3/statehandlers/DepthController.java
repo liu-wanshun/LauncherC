@@ -101,6 +101,9 @@ public class DepthController extends BaseDepthController implements StateHandler
     }
 
     private void ensureDependencies() {
+        if (!Utilities.ATLEAST_S) {
+            return;
+        }
         if (mLauncher.getRootView() != null && mOnAttachListener == null) {
             View rootView = mLauncher.getRootView();
             mOnAttachListener = new View.OnAttachStateChangeListener() {
@@ -131,6 +134,7 @@ public class DepthController extends BaseDepthController implements StateHandler
      * Sets if the underlying activity is started or not
      */
     public void setActivityStarted(boolean isStarted) {
+        if (!Utilities.ATLEAST_R) return;
         if (isStarted) {
             mLauncher.getDragLayer().getViewTreeObserver().addOnDrawListener(mOnDrawListener);
         } else {

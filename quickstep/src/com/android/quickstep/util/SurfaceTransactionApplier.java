@@ -16,6 +16,7 @@
 package com.android.quickstep.util;
 
 import android.annotation.TargetApi;
+import android.graphics.HardwareRenderer;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
@@ -24,6 +25,7 @@ import android.view.SurfaceControl.Transaction;
 import android.view.View;
 import android.view.ViewRootImpl;
 
+import com.android.launcher3.Utilities;
 import com.android.quickstep.RemoteAnimationTargets.ReleaseCheck;
 import com.android.systemui.shared.system.SyncRtSurfaceTransactionApplierCompat.SurfaceParams;
 
@@ -86,15 +88,22 @@ public class SurfaceTransactionApplier extends ReleaseCheck {
         mLastSequenceNumber++;
         final int toApplySeqNo = mLastSequenceNumber;
         setCanRelease(false);
-        mTargetViewRootImpl.registerRtFrameCallback(frame -> {
-            if (mBarrierSurfaceControl == null || !mBarrierSurfaceControl.isValid()) {
+        mTargetViewRootImpl.registerRtFrameCallback(new HardwareRenderer.FrameDrawingCallback() {
+            @Override
+            public void onFrameDraw(long frame) {
+                if (mBarrierSurfaceControl == null || !mBarrierSurfaceControl.isValid()) {
+                    Message.obtain(mApplyHandler, MSG_UPDATE_SEQUENCE_NUMBER, toApplySeqNo, 0)
+                            .sendToTarget();
+                    return;
+                }
+                if (Utilities.ATLEAST_S) {
+                    mTargetViewRootImpl.mergeWithNextTransaction(t, frame);
+                } else {
+                    t.apply();
+                }
                 Message.obtain(mApplyHandler, MSG_UPDATE_SEQUENCE_NUMBER, toApplySeqNo, 0)
                         .sendToTarget();
-                return;
             }
-            mTargetViewRootImpl.mergeWithNextTransaction(t, frame);
-            Message.obtain(mApplyHandler, MSG_UPDATE_SEQUENCE_NUMBER, toApplySeqNo, 0)
-                    .sendToTarget();
         });
 
         // Make sure a frame gets scheduled.

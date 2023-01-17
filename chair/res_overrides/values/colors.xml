@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="icon_background">#3DDC84</color>
+
+    <color name="wallpaper_popup_scrim">#ff1b1b1b</color>
+    <color name="folder_dot_color">#ff1b6ef3</color>
+</resources>

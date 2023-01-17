@@ -47,6 +47,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -700,6 +702,10 @@ public class WidgetsFullSheet extends BaseWidgetSheet
     @Override
     public void onDragStart(boolean start, float startDisplacement) {
         super.onDragStart(start, startDisplacement);
+        if (!Utilities.ATLEAST_R) {
+            WindowCompat.getInsetsController(mActivityContext.getWindow(), this).hide(WindowInsetsCompat.Type.ime());
+            return;
+        }
         getWindowInsetsController().hide(WindowInsets.Type.ime());
     }
 

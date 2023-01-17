@@ -825,6 +825,9 @@ public class QuickstepLauncher extends Launcher {
      * @param opts the options to set the launchCookie on.
      */
     public void addLaunchCookie(ItemInfo info, ActivityOptions opts) {
+        if (!Utilities.ATLEAST_S) {
+            return;
+        }
         IBinder launchCookie = getLaunchCookie(info);
         if (launchCookie != null) {
             opts.setLaunchCookie(launchCookie);

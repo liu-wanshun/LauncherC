@@ -106,7 +106,7 @@ public class BaseDepthController {
     protected void applyDepthAndBlur() {
         float depth = mDepth;
         IBinder windowToken = mLauncher.getRootView().getWindowToken();
-        if (windowToken != null) {
+        if (Utilities.ATLEAST_R && windowToken != null) {
             mWallpaperManager.setWallpaperZoomOut(windowToken, depth);
         }
 

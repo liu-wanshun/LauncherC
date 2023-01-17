@@ -20,6 +20,7 @@ import static android.view.Surface.ROTATION_180;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Build;
 import android.view.WindowManager;
 import android.view.WindowMetrics;
@@ -27,8 +28,14 @@ import android.view.WindowMetrics;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.window.layout.WindowMetricsCalculator;
 
+import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.util.DisplayController;
 import com.android.launcher3.util.WindowBounds;
 
@@ -69,8 +76,17 @@ public class SplitScreenBounds {
      * Creates window bounds as 50% of device size
      */
     private static WindowBounds createDefaultWindowBounds(Context context) {
-        WindowMetrics wm = context.getSystemService(WindowManager.class).getMaximumWindowMetrics();
-        WindowBounds bounds = WindowBounds.fromWindowMetrics(wm);
+        WindowBounds bounds;
+        if (Utilities.ATLEAST_R) {
+            WindowMetrics wm = context.getSystemService(WindowManager.class).getMaximumWindowMetrics();
+            bounds = WindowBounds.fromWindowMetrics(wm);
+        } else {
+            Launcher launcher = Launcher.getLauncher(context);
+            Rect windowBounds = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(Launcher.getLauncher(context)).getBounds();
+            Insets insets = ViewCompat.getRootWindowInsets(launcher.getWindow().getDecorView()).getInsets(WindowInsetsCompat.Type.systemBars());
+            bounds = new WindowBounds(windowBounds,
+                    new Rect(insets.left, insets.top, insets.right, insets.bottom));
+        }
 
         int rotation = DisplayController.INSTANCE.get(context).getInfo().rotation;
         int halfDividerSize = context.getResources()

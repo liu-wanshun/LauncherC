@@ -406,6 +406,9 @@ public class RecentsAnimationDeviceState implements DisplayInfoChangeListener {
      * @return whether screen pinning is enabled and active
      */
     public boolean isScreenPinningActive() {
+        if (!Utilities.ATLEAST_R) {
+            return ActivityManagerWrapper.getInstance().isScreenPinningActive();
+        }
         return (mSystemUiStateFlags & SYSUI_STATE_SCREEN_PINNING) != 0;
     }
 

@@ -29,6 +29,7 @@ import android.widget.RemoteViews.RemoteViewOutlineProvider;
 
 import androidx.annotation.Nullable;
 
+import com.android.launcher3.Utilities;
 import com.android.launcher3.widget.LauncherAppWidgetHostView;
 import com.android.launcher3.widget.RoundedCornerEnforcement;
 
@@ -156,7 +157,8 @@ final class FloatingWidgetBackgroundView extends View {
         if (RoundedCornerEnforcement.isRoundedCornerEnabled()
                 && hostView.hasEnforcedCornerRadius()) {
             return hostView.getEnforcedCornerRadius();
-        } else if (v.getOutlineProvider() instanceof RemoteViewOutlineProvider
+        } else if (Utilities.ATLEAST_S &&
+                v.getOutlineProvider() instanceof RemoteViewOutlineProvider
                 && v.getClipToOutline()) {
             return ((RemoteViewOutlineProvider) v.getOutlineProvider()).getRadius();
         }
