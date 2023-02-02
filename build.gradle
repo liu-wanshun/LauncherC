@@ -94,6 +94,18 @@ android {
             testApplicationId 'com.android.launcher3.tests'
         }
 
+        chair {
+            dimension "app"
+            applicationId 'app.lws.launcherc'
+            testApplicationId 'com.android.launcher3.tests'
+            isDefault true
+        }
+
+        all {
+            resValue("string", "quickstep_component", "${applicationId}/com.android.launcher3.uioverrides.QuickstepLauncher")
+            resValue("string", "launcher_component", "${applicationId}/com.android.launcher3.Launcher")
+        }
+
         l3go {
             dimension "app"
             applicationId 'com.android.launcher3'
@@ -147,6 +159,21 @@ android {
         }
 
         aospWithQuickstep {
+            manifest.srcFile "quickstep/AndroidManifest-launcher.xml"
+        }
+
+        chair {
+            java.srcDirs = ["src_flags", "src_shortcuts_overrides", "chair/src"]
+            res.srcDirs = ["chair/res", "chair/res_overrides"]
+            manifest.srcFile "chair/AndroidManifest.xml"
+            assets.srcDirs "chair/assets"
+        }
+
+        chairWithoutQuickstep {
+            manifest.srcFile "AndroidManifest.xml"
+        }
+
+        chairWithQuickstep {
             manifest.srcFile "quickstep/AndroidManifest-launcher.xml"
         }
 

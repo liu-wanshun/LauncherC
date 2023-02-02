@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="derived_app_name" translatable="false">LauncherC</string>
+
+    <string-array name="filtered_components">
+        <item>@string/launcher_component</item>
+        <item>@string/quickstep_component</item>
+    </string-array>
+</resources>
