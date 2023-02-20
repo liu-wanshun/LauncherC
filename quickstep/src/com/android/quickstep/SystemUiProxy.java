@@ -49,10 +49,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 
 import com.android.internal.logging.InstanceId;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.util.MainThreadInitializedObject;
 import com.android.launcher3.util.SplitConfigurationOptions;
 import com.android.systemui.shared.recents.ISystemUiProxy;
 import com.android.systemui.shared.recents.model.Task;
+import com.android.systemui.shared.system.ActivityManagerWrapper;
 import com.android.systemui.shared.system.RemoteTransitionCompat;
 import com.android.systemui.shared.system.smartspace.ILauncherUnlockAnimationController;
 import com.android.systemui.shared.system.smartspace.ISysuiUnlockAnimationController;
@@ -74,6 +76,8 @@ import com.android.wm.shell.util.GroupedRecentTaskInfo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Holds the reference to SystemUI.
@@ -311,6 +315,18 @@ public class SystemUiProxy implements ISystemUiProxy {
                 Log.w(TAG, "Failed call startAssistant", e);
             }
         }
+    }
+
+    @Override
+    public Bundle monitorGestureInput(String name, int displayId) {
+        if (mSystemUiProxy != null) {
+            try {
+                return mSystemUiProxy.monitorGestureInput(name, displayId);
+            } catch (RemoteException e) {
+                Log.w(TAG, "Failed call monitorGestureInput: " + name, e);
+            }
+        }
+        return null;
     }
 
     @Override
@@ -872,6 +888,10 @@ public class SystemUiProxy implements ISystemUiProxy {
     }
 
     public ArrayList<GroupedRecentTaskInfo> getRecentTasks(int numTasks, int userId) {
+        if (!Utilities.ATLEAST_T) {
+            List<ActivityManager.RecentTaskInfo> recentTaskInfoList = ActivityManagerWrapper.getInstance().getRecentTasks(numTasks, userId);
+            return recentTaskInfoList.stream().map(GroupedRecentTaskInfo::forSingleTask).collect(Collectors.toCollection(ArrayList::new));
+        }
         if (mRecentTasks != null) {
             try {
                 final GroupedRecentTaskInfo[] rawTasks = mRecentTasks.getRecentTasks(numTasks,

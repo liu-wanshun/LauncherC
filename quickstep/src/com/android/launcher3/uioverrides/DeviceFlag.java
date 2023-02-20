@@ -46,6 +46,9 @@ public class DeviceFlag extends DebugFlag {
     }
 
     protected static boolean getDeviceValue(String key, boolean defaultValue) {
+        if (true){
+            return defaultValue;
+        }
         return DeviceConfig.getBoolean(NAMESPACE_LAUNCHER, key, defaultValue);
     }
 }

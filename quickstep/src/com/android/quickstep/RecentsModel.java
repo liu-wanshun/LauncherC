@@ -51,6 +51,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
+import app.lws.launcherc.LauncherCApp;
+
 /**
  * Singleton class to load and manage recents model.
  */
@@ -83,7 +85,9 @@ public class RecentsModel implements IconChangeListener, TaskStackChangeListener
         mIconCache.registerTaskVisualsChangeListener(this);
         mThumbnailCache = new TaskThumbnailCache(context, RECENTS_MODEL_EXECUTOR);
 
-        TaskStackChangeListeners.getInstance().registerTaskStackListener(this);
+        if (LauncherCApp.isRecentsEnabled()) {
+            TaskStackChangeListeners.getInstance().registerTaskStackListener(this);
+        }
         iconProvider.registerIconChangeListener(this, MAIN_EXECUTOR.getHandler());
     }
 

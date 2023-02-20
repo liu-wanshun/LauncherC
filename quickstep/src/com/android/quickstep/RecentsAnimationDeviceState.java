@@ -94,7 +94,7 @@ public class RecentsAnimationDeviceState implements DisplayInfoChangeListener {
     private final RotationTouchHelper mRotationTouchHelper;
     private final TaskStackChangeListener mPipListener;
     // Cache for better performance since it doesn't change at runtime.
-    private final boolean mCanImeRenderGesturalNavButtons =
+    private final boolean mCanImeRenderGesturalNavButtons = Utilities.ATLEAST_T &&
             InputMethodService.canImeRenderGesturalNavButtons();
 
     private final ArrayList<Runnable> mOnDestroyActions = new ArrayList<>();

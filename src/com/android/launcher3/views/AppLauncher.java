@@ -143,9 +143,11 @@ public interface AppLauncher extends ActivityContext {
         ActivityOptions options =
                 ActivityOptions.makeClipRevealAnimation(v, left, top, width, height);
 
-        options.setLaunchDisplayId(
-                (v != null && v.getDisplay() != null) ? v.getDisplay().getDisplayId()
-                        : Display.DEFAULT_DISPLAY);
+        if (Utilities.ATLEAST_T) {
+            options.setLaunchDisplayId(
+                    (v != null && v.getDisplay() != null) ? v.getDisplay().getDisplayId()
+                            : Display.DEFAULT_DISPLAY);
+        }
         RunnableList callback = new RunnableList();
         return new ActivityOptionsWrapper(options, callback);
     }

@@ -107,9 +107,9 @@ public class RecentsAnimationCallbacks implements
             Utilities.postAsyncCallback(MAIN_EXECUTOR.getHandler(),
                     mController::finishAnimationToApp);
         } else {
-            final RemoteAnimationTarget[] nonAppTargets = mSystemUiProxy.onGoingToRecentsLegacy(
+            final RemoteAnimationTarget[] nonAppTargets = Utilities.ATLEAST_T?mSystemUiProxy.onGoingToRecentsLegacy(
                     Arrays.stream(appTargets).map(RemoteAnimationTargetCompat::unwrap)
-                            .toArray(RemoteAnimationTarget[]::new));
+                            .toArray(RemoteAnimationTarget[]::new)):null;
             final RecentsAnimationTargets targets = new RecentsAnimationTargets(appTargets,
                     wallpaperTargets, RemoteAnimationTargetCompat.wrap(nonAppTargets),
                     homeContentInsets, minimizedHomeBounds);

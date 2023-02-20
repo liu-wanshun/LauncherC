@@ -50,6 +50,7 @@ import com.android.launcher3.LauncherAnimationRunner;
 import com.android.launcher3.LauncherAnimationRunner.AnimationResult;
 import com.android.launcher3.LauncherAnimationRunner.RemoteAnimationFactory;
 import com.android.launcher3.R;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.anim.AnimatorPlaybackController;
 import com.android.launcher3.anim.Interpolators;
 import com.android.launcher3.anim.PendingAnimation;
@@ -268,11 +269,13 @@ public final class RecentsActivity extends StatefulActivity<RecentsState> {
                 adapterCompat.getRemoteTransition().getTransition());
         final ActivityOptionsWrapper activityOptions = new ActivityOptionsWrapper(options,
                 onEndCallback);
-        activityOptions.options.setSplashScreenStyle(SplashScreen.SPLASH_SCREEN_STYLE_ICON);
-        activityOptions.options.setLaunchDisplayId(
-                (v != null && v.getDisplay() != null) ? v.getDisplay().getDisplayId()
-                        : Display.DEFAULT_DISPLAY);
-        mHandler.postDelayed(mAnimationStartTimeoutRunnable, RECENTS_ANIMATION_TIMEOUT);
+        if (Utilities.ATLEAST_T) {
+            activityOptions.options.setSplashScreenStyle(SplashScreen.SPLASH_SCREEN_STYLE_ICON);
+            activityOptions.options.setLaunchDisplayId(
+                    (v != null && v.getDisplay() != null) ? v.getDisplay().getDisplayId()
+                            : Display.DEFAULT_DISPLAY);
+            mHandler.postDelayed(mAnimationStartTimeoutRunnable, RECENTS_ANIMATION_TIMEOUT);
+        }
         return activityOptions;
     }
 

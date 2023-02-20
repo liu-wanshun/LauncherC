@@ -31,6 +31,7 @@ import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
 import static java.util.stream.Collectors.toCollection;
 
+import android.Manifest;
 import android.app.StatsManager;
 import android.app.prediction.AppPredictionContext;
 import android.app.prediction.AppPredictionManager;
@@ -42,6 +43,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.LauncherActivityInfo;
 import android.content.pm.LauncherApps;
+import android.content.pm.PackageManager;
 import android.content.pm.ShortcutInfo;
 import android.os.Bundle;
 import android.os.UserHandle;
@@ -281,6 +283,8 @@ public class QuickstepModelDelegate extends ModelDelegate {
         if (apm == null) {
             return;
         }
+        int usagePerm = mApp.getContext().checkCallingOrSelfPermission(Manifest.permission.PACKAGE_USAGE_STATS);
+        if (usagePerm != PackageManager.PERMISSION_GRANTED) return;
 
         registerPredictor(mAllAppsState, apm.createAppPredictionSession(
                 new AppPredictionContext.Builder(context)

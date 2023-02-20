@@ -23,6 +23,7 @@ import android.view.Surface;
 import android.view.WindowManager;
 import android.view.WindowMetrics;
 
+import com.android.launcher3.Utilities;
 import com.android.launcher3.util.WindowBounds;
 import com.android.launcher3.util.window.CachedDisplayInfo;
 import com.android.launcher3.util.window.WindowManagerProxy;
@@ -35,7 +36,7 @@ import java.util.Set;
 public class SystemWindowManagerProxy extends WindowManagerProxy {
 
     public SystemWindowManagerProxy(Context context) {
-        super(true);
+        super(Utilities.ATLEAST_T);
     }
 
     @Override
@@ -47,6 +48,9 @@ public class SystemWindowManagerProxy extends WindowManagerProxy {
     @Override
     public ArrayMap<CachedDisplayInfo, WindowBounds[]> estimateInternalDisplayBounds(
             Context displayInfoContext) {
+        if (!Utilities.ATLEAST_T) {
+            return super.estimateInternalDisplayBounds(displayInfoContext);
+        }
         ArrayMap<CachedDisplayInfo, WindowBounds[]> result = new ArrayMap<>();
         WindowManager windowManager = displayInfoContext.getSystemService(WindowManager.class);
         Set<WindowMetrics> possibleMaximumWindowMetrics =

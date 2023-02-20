@@ -17,6 +17,7 @@ package com.android.launcher3.taskbar;
 
 import static android.content.pm.PackageManager.FEATURE_PC;
 import static android.view.Display.DEFAULT_DISPLAY;
+import static android.view.WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
 import static android.view.WindowManager.LayoutParams.TYPE_NAVIGATION_BAR_PANEL;
 
 import static com.android.launcher3.util.DisplayController.CHANGE_DENSITY;
@@ -38,6 +39,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
+import com.android.launcher3.Utilities;
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.anim.AnimatorPlaybackController;
@@ -115,7 +117,21 @@ public class TaskbarManager {
         mDisplayController = DisplayController.INSTANCE.get(service);
         Display display =
                 service.getSystemService(DisplayManager.class).getDisplay(DEFAULT_DISPLAY);
+        //*/ modify by liuwanshun
+        Context tempContext;
+        if (Utilities.ATLEAST_T) {
+            tempContext = service.createWindowContext(display, TYPE_NAVIGATION_BAR_PANEL, null);
+        } else if (Utilities.ATLEAST_S) {
+            tempContext = service.createWindowContext(display, TYPE_APPLICATION_OVERLAY, null);
+        } else if (Utilities.ATLEAST_R) {
+            tempContext = service.createWindowContext(TYPE_APPLICATION_OVERLAY, null);
+        } else {
+            tempContext = service;
+        }
+        mContext = tempContext;
+        /*/
         mContext = service.createWindowContext(display, TYPE_NAVIGATION_BAR_PANEL, null);
+        /*/
         mNavButtonController = new TaskbarNavButtonController(service,
                 SystemUiProxy.INSTANCE.get(mContext), new Handler());
         mUserSetupCompleteListener = isUserSetupComplete -> recreateTaskbar();

@@ -155,6 +155,8 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import app.lws.launcherc.LauncherCApp;
+
 public class QuickstepLauncher extends Launcher {
 
     public static final boolean ENABLE_PIP_KEEP_CLEAR_ALGORITHM =
@@ -479,7 +481,9 @@ public class QuickstepLauncher extends Launcher {
 
     protected LauncherAppWidgetHost createAppWidgetHost() {
         LauncherAppWidgetHost appWidgetHost = super.createAppWidgetHost();
-        appWidgetHost.setInteractionHandler(new QuickstepInteractionHandler(this));
+        if (Utilities.ATLEAST_T && LauncherCApp.isRecentsEnabled()) {
+            appWidgetHost.setInteractionHandler(new QuickstepInteractionHandler(this));
+        }
         return appWidgetHost;
     }
 
@@ -800,11 +804,13 @@ public class QuickstepLauncher extends Launcher {
                 mAppTransitionManager.hasControlRemoteAppTransitionPermission()
                         ? mAppTransitionManager.getActivityLaunchOptions(v)
                         : super.getActivityLaunchOptions(v, item);
-        if (mLastTouchUpTime > 0) {
+        if (Utilities.ATLEAST_S && mLastTouchUpTime > 0) {
             activityOptions.options.setSourceInfo(ActivityOptions.SourceInfo.TYPE_LAUNCHER,
                     mLastTouchUpTime);
         }
-        activityOptions.options.setSplashScreenStyle(SplashScreen.SPLASH_SCREEN_STYLE_ICON);
+        if (Utilities.ATLEAST_T) {
+            activityOptions.options.setSplashScreenStyle(SplashScreen.SPLASH_SCREEN_STYLE_ICON);
+        }
         activityOptions.options.setLaunchDisplayId(
                 (v != null && v.getDisplay() != null) ? v.getDisplay().getDisplayId()
                         : Display.DEFAULT_DISPLAY);

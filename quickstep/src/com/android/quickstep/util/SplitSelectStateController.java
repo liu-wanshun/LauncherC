@@ -46,6 +46,7 @@ import android.window.TransitionInfo;
 import androidx.annotation.Nullable;
 
 import com.android.internal.logging.InstanceId;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.logging.StatsLogManager;
 import com.android.launcher3.model.data.ItemInfo;
 import com.android.launcher3.shortcuts.ShortcutKey;
@@ -234,10 +235,17 @@ public class SplitSelectStateController {
             RemoteSplitLaunchAnimationRunner animationRunner =
                     new RemoteSplitLaunchAnimationRunner(taskId1, taskPendingIntent, taskId2,
                             callback);
-            final RemoteAnimationAdapter adapter = new RemoteAnimationAdapter(
-                    RemoteAnimationAdapterCompat.wrapRemoteAnimationRunner(animationRunner),
-                    300, 150,
-                    ActivityThread.currentActivityThread().getApplicationThread());
+            final RemoteAnimationAdapter adapter;
+            if (Utilities.ATLEAST_T) {
+                adapter = new RemoteAnimationAdapter(
+                        RemoteAnimationAdapterCompat.wrapRemoteAnimationRunner(animationRunner),
+                        300, 150,
+                        ActivityThread.currentActivityThread().getApplicationThread());
+            } else {
+                adapter = new RemoteAnimationAdapter(
+                        RemoteAnimationAdapterCompat.wrapRemoteAnimationRunner(animationRunner),
+                        300, 150);
+            }
 
             ActivityOptions mainOpts = ActivityOptions.makeBasic();
             if (freezeTaskList) {

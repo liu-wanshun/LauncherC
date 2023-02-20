@@ -28,10 +28,13 @@ import android.util.SparseBooleanArray;
 
 import androidx.annotation.VisibleForTesting;
 
+import com.android.launcher3.Utilities;
 import com.android.launcher3.util.LooperExecutor;
 import com.android.launcher3.util.SplitConfigurationOptions;
 import com.android.quickstep.util.GroupTask;
 import com.android.systemui.shared.recents.model.Task;
+import com.android.systemui.shared.system.TaskStackChangeListener;
+import com.android.systemui.shared.system.TaskStackChangeListeners;
 import com.android.wm.shell.recents.IRecentTasksListener;
 import com.android.wm.shell.util.GroupedRecentTaskInfo;
 import com.android.wm.shell.util.SplitBounds;
@@ -40,6 +43,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.function.Consumer;
+
+import app.lws.launcherc.LauncherCApp;
 
 /**
  * Manages the recent task list from the system, caching it as necessary.
@@ -72,31 +77,62 @@ public class RecentTasksList {
         mKeyguardManager = keyguardManager;
         mChangeId = 1;
         mSysUiProxy = sysUiProxy;
-        sysUiProxy.registerRecentTasksListener(new IRecentTasksListener.Stub() {
-            @Override
-            public void onRecentTasksChanged() throws RemoteException {
-                mMainThreadExecutor.execute(RecentTasksList.this::onRecentTasksChanged);
-            }
+        if (LauncherCApp.isRecentsEnabled()) {
+            if (Utilities.ATLEAST_T) {
+                sysUiProxy.registerRecentTasksListener(new IRecentTasksListener.Stub() {
+                    @Override
+                    public void onRecentTasksChanged() throws RemoteException {
+                        mMainThreadExecutor.execute(RecentTasksList.this::onRecentTasksChanged);
+                    }
 
-            @Override
-            public void onRunningTaskAppeared(ActivityManager.RunningTaskInfo taskInfo) {
-                mMainThreadExecutor.execute(() -> {
-                    RecentTasksList.this.onRunningTaskAppeared(taskInfo);
+                    @Override
+                    public void onRunningTaskAppeared(ActivityManager.RunningTaskInfo taskInfo) {
+                        mMainThreadExecutor.execute(() -> {
+                            RecentTasksList.this.onRunningTaskAppeared(taskInfo);
+                        });
+                    }
+
+                    @Override
+                    public void onRunningTaskVanished(ActivityManager.RunningTaskInfo taskInfo) {
+                        mMainThreadExecutor.execute(() -> {
+                            RecentTasksList.this.onRunningTaskVanished(taskInfo);
+                        });
+                    }
+                });
+            }else if (Utilities.ATLEAST_Q) {
+                TaskStackChangeListeners.getInstance().registerTaskStackListener(new TaskStackChangeListener() {
+                    @Override
+                    public void onTaskStackChanged() {
+                        onRecentTasksChanged();
+                    }
+
+                    @Override
+                    public void onRecentTaskListUpdated() {
+                        onRecentTasksChanged();
+                    }
+
+                    @Override
+                    public void onTaskRemoved(int taskId) {
+                        onRecentTasksChanged();
+                    }
+
+                    @Override
+                    public void onActivityPinned(String packageName, int userId, int taskId, int stackId) {
+                        onRecentTasksChanged();
+                    }
+
+                    @Override
+                    public void onActivityUnpinned() {
+                        onRecentTasksChanged();
+                    }
                 });
             }
-
-            @Override
-            public void onRunningTaskVanished(ActivityManager.RunningTaskInfo taskInfo) {
-                mMainThreadExecutor.execute(() -> {
-                    RecentTasksList.this.onRunningTaskVanished(taskInfo);
-                });
-            }
-        });
-        // We may receive onRunningTaskAppeared events later for tasks which have already been
-        // included in the list returned by mSysUiProxy.getRunningTasks(), or may receive
-        // onRunningTaskVanished for tasks not included in the returned list. These cases will be
-        // addressed when the tasks are added to/removed from mRunningTasks.
-        initRunningTasks(mSysUiProxy.getRunningTasks(Integer.MAX_VALUE));
+            // We may receive onRunningTaskAppeared events later for tasks which have already been
+            // included in the list returned by mSysUiProxy.getRunningTasks(), or may receive
+            // onRunningTaskVanished for tasks not included in the returned list. These cases will be
+            // addressed when the tasks are added to/removed from mRunningTasks.
+            initRunningTasks(mSysUiProxy.getRunningTasks(Integer.MAX_VALUE));
+        }
     }
 
     @VisibleForTesting

@@ -232,6 +232,8 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import app.lws.launcherc.LauncherCApp;
+
 /**
  * Default launcher application.
  */
@@ -1606,7 +1608,11 @@ public class Launcher extends StatefulActivity<LauncherState>
                 if (!isInState(NORMAL)) {
                     // Only change state, if not already the same. This prevents cancelling any
                     // animations running as part of resume
-                    mStateManager.goToState(NORMAL, mStateManager.shouldAnimateStateChange());
+                    boolean animate = mStateManager.shouldAnimateStateChange();
+                    if (!LauncherCApp.isRecentsEnabled()) {
+                        animate &= alreadyOnHome;
+                    }
+                    mStateManager.goToState(NORMAL, animate);
                 }
 
                 // Reset the apps view

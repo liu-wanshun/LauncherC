@@ -201,6 +201,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+import app.lws.launcherc.LauncherCApp;
+
 /**
  * A list of recent tasks.
  */
@@ -935,8 +937,10 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
         updateTaskStackListenerState();
         mModel.getThumbnailCache().getHighResLoadingState().addCallback(this);
         mActivity.addMultiWindowModeChangedListener(mMultiWindowModeChangedListener);
-        TaskStackChangeListeners.getInstance().registerTaskStackListener(mTaskStackListener);
-        mSyncTransactionApplier = new SurfaceTransactionApplier(this);
+        if (LauncherCApp.isRecentsEnabled()) {
+            TaskStackChangeListeners.getInstance().registerTaskStackListener(mTaskStackListener);
+            mSyncTransactionApplier = new SurfaceTransactionApplier(this);
+        }
         runActionOnRemoteHandles(remoteTargetHandle -> remoteTargetHandle.getTransformParams()
                 .setSyncTransactionApplier(mSyncTransactionApplier));
         RecentsModel.INSTANCE.get(getContext()).addThumbnailChangeListener(this);
@@ -954,8 +958,10 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
         updateTaskStackListenerState();
         mModel.getThumbnailCache().getHighResLoadingState().removeCallback(this);
         mActivity.removeMultiWindowModeChangedListener(mMultiWindowModeChangedListener);
-        TaskStackChangeListeners.getInstance().unregisterTaskStackListener(mTaskStackListener);
-        mSyncTransactionApplier = null;
+        if (LauncherCApp.isRecentsEnabled()) {
+            TaskStackChangeListeners.getInstance().unregisterTaskStackListener(mTaskStackListener);
+            mSyncTransactionApplier = null;
+        }
         runActionOnRemoteHandles(remoteTargetHandle -> remoteTargetHandle.getTransformParams()
                 .setSyncTransactionApplier(null));
         executeSideTaskLaunchCallback();
@@ -4717,17 +4723,19 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
             final SystemUiProxy systemUiProxy = SystemUiProxy.INSTANCE.get(getContext());
             systemUiProxy.notifySwipeToHomeFinished();
             systemUiProxy.setShelfHeight(true, mActivity.getDeviceProfile().hotseatBarSizePx);
-            // Transaction to hide the task to avoid flicker for entering PiP from split-screen.
-            // See also {@link AbsSwipeUpHandler#maybeFinishSwipeToHome}.
-            PictureInPictureSurfaceTransaction tx =
-                    new PictureInPictureSurfaceTransaction.Builder()
-                            .setAlpha(0f)
-                            .build();
-            tx.setShouldDisableCanAffectSystemUiFlags(false);
-            int[] taskIds = TopTaskTracker.INSTANCE.get(getContext()).getRunningSplitTaskIds();
-            for (int taskId : taskIds) {
-                mRecentsAnimationController.setFinishTaskTransaction(taskId,
-                        tx, null /* overlay */);
+            if (Utilities.ATLEAST_T) {
+                // Transaction to hide the task to avoid flicker for entering PiP from split-screen.
+                // See also {@link AbsSwipeUpHandler#maybeFinishSwipeToHome}.
+                PictureInPictureSurfaceTransaction tx =
+                        new PictureInPictureSurfaceTransaction.Builder()
+                                .setAlpha(0f)
+                                .build();
+                tx.setShouldDisableCanAffectSystemUiFlags(false);
+                int[] taskIds = TopTaskTracker.INSTANCE.get(getContext()).getRunningSplitTaskIds();
+                for (int taskId : taskIds) {
+                    mRecentsAnimationController.setFinishTaskTransaction(taskId,
+                            tx, null /* overlay */);
+                }
             }
         }
         mRecentsAnimationController.finish(toRecents, () -> {

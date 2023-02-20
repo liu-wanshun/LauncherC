@@ -41,6 +41,7 @@ import androidx.annotation.Nullable;
 import com.android.launcher3.BaseDraggingActivity;
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.R;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.logging.StatsLogManager.LauncherEvent;
 import com.android.launcher3.model.WellbeingModel;
 import com.android.launcher3.popup.SystemShortcut;
@@ -160,7 +161,7 @@ public interface TaskShortcutFactory {
             final Task.TaskKey taskKey = mTaskView.getTask().key;
             final int taskId = taskKey.id;
             final ActivityOptions options = makeLaunchOptions(mTarget);
-            if (options != null) {
+            if (Utilities.ATLEAST_T && options != null) {
                 options.setSplashScreenStyle(SplashScreen.SPLASH_SCREEN_STYLE_ICON);
             }
             if (options != null

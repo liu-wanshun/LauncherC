@@ -115,7 +115,7 @@ android {
         withQuickstep {
             dimension "recents"
 
-            minSdkVersion 33
+            minSdkVersion 28
         }
 
         withoutQuickstep {
@@ -210,7 +210,8 @@ dependencies {
     implementation libs.androidx.recyclerview.recyclerview
     implementation libs.androidx.preference
     implementation project(':IconLoader')
-    implementation("com.github.liu-wanshun:launcherlib-systemui-shared:13")
+    implementation("com.github.ChickenHook:RestrictionBypass:2.2")
+    implementation("com.github.liu-wanshun:launcherlib-systemui-shared:13.0.1")
     implementation fileTree(dir: "libs", include: 'SystemUI-statsd.jar')
 
 

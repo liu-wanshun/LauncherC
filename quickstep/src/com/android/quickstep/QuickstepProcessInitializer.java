@@ -63,6 +63,9 @@ public class QuickstepProcessInitializer extends MainProcessInitializer {
         ThreadedRenderer.setContextPriority(
                 ThreadedRenderer.EGL_CONTEXT_PRIORITY_HIGH_IMG);
 
+        if (true){
+            return;
+        }
         // Enable binder tracing on system server for calls originating from Launcher
         try {
             ActivityManager.getService().enableBinderTracing();

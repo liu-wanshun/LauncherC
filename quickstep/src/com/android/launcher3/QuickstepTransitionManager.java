@@ -293,9 +293,9 @@ public class QuickstepTransitionManager implements OnDeviceProfileChangeListener
         RemoteAnimationAdapterCompat adapterCompat =
                 new RemoteAnimationAdapterCompat(runner, duration, statusBarTransitionDelay,
                         mLauncher.getIApplicationThread());
-        ActivityOptions options = ActivityOptions.makeRemoteAnimation(
+        ActivityOptions options = Utilities.ATLEAST_T?ActivityOptions.makeRemoteAnimation(
                 adapterCompat.getWrapped(),
-                adapterCompat.getRemoteTransition().getTransition());
+                adapterCompat.getRemoteTransition().getTransition()):ActivityOptions.makeRemoteAnimation(adapterCompat.getWrapped());
         return new ActivityOptionsWrapper(options, onEndCallback);
     }
 
@@ -1125,6 +1125,7 @@ public class QuickstepTransitionManager implements OnDeviceProfileChangeListener
         if (SEPARATE_RECENTS_ACTIVITY.get()) {
             return;
         }
+        if (!Utilities.ATLEAST_T) return;
         if (hasControlRemoteAppTransitionPermission()) {
             mWallpaperOpenTransitionRunner = createWallpaperOpenRunner(false /* fromUnlock */);
             mLauncherOpenTransition = RemoteAnimationAdapterCompat.buildRemoteTransition(
