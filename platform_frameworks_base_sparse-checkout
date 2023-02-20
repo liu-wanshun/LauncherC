@@ -1,9 +1,0 @@
-/.gitignore
-packages/SystemUI/shared
-packages/SystemUI/unfold
-packages/SystemUI/plugin_core
-packages/SystemUI/plugin
-packages/SystemUI/animation
-libs/WindowManager/Shell/build.gradle
-libs/WindowManager/Shell/src/com/android/wm/shell/util/**/*.java
-libs/WindowManager/Shell/src/com/android/wm/shell/common/split/SplitScreenConstants.java

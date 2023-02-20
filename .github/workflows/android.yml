@@ -1,0 +1,54 @@
+name: Android CI
+
+on:
+  workflow_dispatch:
+  workflow_call:
+  push:
+    branches: [ "android13" ]
+  pull_request:
+    branches: [ "android13" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    continue-on-error: true
+
+    steps:
+
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+      - name: Write sign info
+        if: github.repository == 'liu-wanshun/LauncherC'
+        run: |
+          if [ ! -z "${{ secrets.KEYSTORE }}" ]; then
+          echo storePassword='${{ secrets.KEYSTORE_PASSWORD }}' >> keystore.properties
+          echo keyAlias='${{ secrets.KEY_ALIAS }}' >> keystore.properties
+          echo keyPassword='${{ secrets.KEY_PASSWORD }}' >> keystore.properties
+          echo storeFile='${{ github.workspace }}/key.jks' >> keystore.properties
+          echo ${{ secrets.KEYSTORE }} | base64 --decode > ${{ github.workspace }}/key.jks
+          fi
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        env:
+          USERNAME: ${{ github.actor }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew assembleChairWithQuickstepRelease
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Release APK
+          path: build/outputs/apk/chairWithQuickstep/release/*.apk

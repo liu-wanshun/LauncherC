@@ -1,5 +1,7 @@
 # LauncherC
 
+[![Android CI](https://github.com/liu-wanshun/LauncherC/actions/workflows/android.yml/badge.svg)](https://github.com/liu-wanshun/LauncherC/actions/workflows/android.yml)
+
 基于 AOSP [Launcher3](https://android.googlesource.com/platform/packages/apps/Launcher3) 开发，支持Android Studio / IDEA
 编译。
 
