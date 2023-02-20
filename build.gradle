@@ -88,11 +88,11 @@ android {
     flavorDimensions "app", "recents"
 
     productFlavors {
-        aosp {
+/*        aosp {
             dimension "app"
             applicationId 'com.android.launcher3'
             testApplicationId 'com.android.launcher3.tests'
-        }
+        }*/
 
         chair {
             dimension "app"
@@ -106,11 +106,11 @@ android {
             resValue("string", "launcher_component", "${applicationId}/com.android.launcher3.Launcher")
         }
 
-        l3go {
+/*        l3go {
             dimension "app"
             applicationId 'com.android.launcher3'
             testApplicationId 'com.android.launcher3.tests'
-        }
+        }*/
 
         withQuickstep {
             dimension "recents"
@@ -140,7 +140,7 @@ android {
             }
         }
 
-        androidTest {
+/*        androidTest {
             res.srcDirs = ['tests/res']
             java.srcDirs = ['tests/src', 'tests/tapl']
             manifest.srcFile "tests/AndroidManifest-common.xml"
@@ -160,7 +160,7 @@ android {
 
         aospWithQuickstep {
             manifest.srcFile "quickstep/AndroidManifest-launcher.xml"
-        }
+        }*/
 
         chair {
             java.srcDirs = ["src_flags", "src_shortcuts_overrides", "chair/src"]
@@ -177,7 +177,7 @@ android {
             manifest.srcFile "quickstep/AndroidManifest-launcher.xml"
         }
 
-        l3go {
+/*        l3go {
             res.srcDirs = ['go/res']
             java.srcDirs = ['go/src']
             manifest.srcFile "go/AndroidManifest.xml"
@@ -189,7 +189,7 @@ android {
 
         l3goWithQuickstepDebug {
             manifest.srcFile "quickstep/AndroidManifest-launcher.xml"
-        }
+        }*/
 
         withoutQuickstep {
             java.srcDirs = ['src_ui_overrides']
@@ -210,8 +210,7 @@ dependencies {
     implementation libs.androidx.recyclerview.recyclerview
     implementation libs.androidx.preference
     implementation project(':IconLoader')
-    implementation project(':SystemUIShared')
-    implementation project(':SystemUIAnimation')
+    implementation("com.github.liu-wanshun:launcherlib-systemui-shared:13")
     implementation fileTree(dir: "libs", include: 'SystemUI-statsd.jar')
 
 

@@ -1,6 +1,3 @@
 [submodule "platform_frameworks_libs_systemui"]
 	path = platform_frameworks_libs_systemui
 	url = https://gitee.com/liu_wanshun/platform_frameworks_libs_systemui.git
-[submodule "platform_frameworks_base"]
-	path = platform_frameworks_base
-	url = https://github.com/liu-wanshun/platform_frameworks_base.git

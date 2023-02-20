@@ -7,22 +7,6 @@ Base on `android13-qpr1`,tag:`android-13.0.0_r24`
 
 旨在构建一个可自定义 (Customizable)、向下兼容 (Compatible) 的 Launcher 应用。
 
-如果您遇到与本地依赖相关的错误，请查看以下Shell脚本
-
-```` shell
-# 0.确保当前在LauncherC项目根目录
-# 1.部分clone platform_frameworks_base
-git clone https://github.com/liu-wanshun/platform_frameworks_base.git --depth=1 --no-checkout  --filter=blob:none
-# 2.platform_frameworks_base 开启 sparseCheckout
-git -C platform_frameworks_base config core.sparseCheckout true
-# 3.将platform_frameworks_base 迁移至submodule
-git submodule absorbgitdirs
-# 4.复制sparse-checkout
-cp -f platform_frameworks_base_sparse-checkout .git/modules/platform_frameworks_base/info/sparse-checkout
-# 5.更新submodule
-git submodule update --init -f 
-````
-
 ## License
 
 ````
