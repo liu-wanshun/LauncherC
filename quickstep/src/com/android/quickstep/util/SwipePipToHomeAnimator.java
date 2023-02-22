@@ -281,7 +281,12 @@ public class SwipePipToHomeAnimator extends RectFSpringAnim {
                 PipSurfaceTransactionHelper.newSurfaceControlTransaction();
         final PictureInPictureSurfaceTransaction pipTx =
                 onAnimationUpdate(tx, new RectF(mDestinationBounds), END_PROGRESS);
-        pipTx.setShouldDisableCanAffectSystemUiFlags(true);
+        try {
+            // android13 qpr1 add
+            pipTx.setShouldDisableCanAffectSystemUiFlags(true);
+        } catch (NoSuchMethodError error) {
+            Log.w(TAG, "not android 13 qpr1 : ", error);
+        }
         return pipTx;
     }
 

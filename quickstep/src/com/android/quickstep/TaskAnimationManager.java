@@ -238,7 +238,9 @@ public class TaskAnimationManager implements RecentsAnimationCallbacks.RecentsAn
             if (!homeIsOnTop) {
                 options.setTransientLaunch();
             }
-            options.setSourceInfo(ActivityOptions.SourceInfo.TYPE_RECENTS_ANIMATION, eventTime);
+            if (Utilities.ATLEAST_S) {
+                options.setSourceInfo(ActivityOptions.SourceInfo.TYPE_RECENTS_ANIMATION, eventTime);
+            }
             UI_HELPER_EXECUTOR.execute(() -> mCtx.startActivity(intent, options.toBundle()));
         } else {
             UI_HELPER_EXECUTOR.execute(() -> ActivityManagerWrapper.getInstance()

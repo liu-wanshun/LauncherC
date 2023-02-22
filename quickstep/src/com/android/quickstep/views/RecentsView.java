@@ -4730,7 +4730,12 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
                         new PictureInPictureSurfaceTransaction.Builder()
                                 .setAlpha(0f)
                                 .build();
-                tx.setShouldDisableCanAffectSystemUiFlags(false);
+                try {
+                    // android13 qpr1 add
+                    tx.setShouldDisableCanAffectSystemUiFlags(false);
+                } catch (NoSuchMethodError error) {
+                    Log.w(TAG, "not android 13 qpr1 : ", error);
+                }
                 int[] taskIds = TopTaskTracker.INSTANCE.get(getContext()).getRunningSplitTaskIds();
                 for (int taskId : taskIds) {
                     mRecentsAnimationController.setFinishTaskTransaction(taskId,

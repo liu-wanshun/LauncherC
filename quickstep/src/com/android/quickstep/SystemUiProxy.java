@@ -902,6 +902,11 @@ public class SystemUiProxy implements ISystemUiProxy {
                 return new ArrayList<>(Arrays.asList(rawTasks));
             } catch (RemoteException e) {
                 Log.w(TAG, "Failed call getRecentTasks", e);
+            } catch (Throwable throwable) {
+                // android 13-
+                Log.w(TAG, "Failed call getRecentTasks ,may be android 13- ", throwable);
+                List<ActivityManager.RecentTaskInfo> recentTaskInfoList = ActivityManagerWrapper.getInstance().getRecentTasks(numTasks, userId);
+                return recentTaskInfoList.stream().map(GroupedRecentTaskInfo::forSingleTask).collect(Collectors.toCollection(ArrayList::new));
             }
         }
         return new ArrayList<>();
