@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id "com.android.application" version "7.3.1"
     id "com.android.library" version "7.3.1" apply false
-    id "org.jetbrains.kotlin.android" version "1.7.20"
+    id "org.jetbrains.kotlin.android" version "1.8.10"
     id "com.google.protobuf" version "0.9.1"
 }
 
@@ -38,7 +38,7 @@ allprojects {
     }
 
     ext.addFrameworkJar = { String path ->
-        def frameworkJar = new File(rootProject.projectDir, 'libs/' + path)
+        def frameworkJar = new File(rootProject.projectDir, 'prebuilt/' + path)
         if (!frameworkJar.exists()) {
             throw new IllegalArgumentException("Framework jar path doesn't exist")
         }
@@ -121,7 +121,7 @@ android {
             isDefault true
         }
 
-        all {
+        configureEach {
             resValue("string", "quickstep_component", "${applicationId}/com.android.launcher3.uioverrides.QuickstepLauncher")
             resValue("string", "launcher_component", "${applicationId}/com.android.launcher3.Launcher")
         }
@@ -225,14 +225,26 @@ android {
     addFrameworkJar('framework-13.jar')
 }
 
+configurations.configureEach {
+    resolutionStrategy {
+        dependencySubstitution {
+            // use local module
+            def targetProject = findProject(":SystemUIShared")
+            if (targetProject != null) {
+                substitute module("com.github.liu-wanshun:launcherlib-systemui-shared:13.0.1") using project(":SystemUIShared")
+            }
+        }
+    }
+}
 dependencies {
+    implementation libs.androidx.lifecycle.viewmodel
     implementation libs.androidx.dynamicanimation
     implementation libs.androidx.recyclerview.recyclerview
     implementation libs.androidx.preference
     implementation project(':IconLoader')
     implementation("com.github.ChickenHook:RestrictionBypass:2.2")
     implementation("com.github.liu-wanshun:launcherlib-systemui-shared:13.0.1")
-    implementation fileTree(dir: "libs", include: 'SystemUI-statsd.jar')
+    implementation fileTree(dir: "prebuilt", include: 'SystemUI-statsd.jar')
 
 
     api libs.airbnb.lottie

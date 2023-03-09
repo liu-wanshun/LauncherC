@@ -27,3 +27,32 @@ project(':IconLoader').projectDir = new File(rootDir, 'platform_frameworks_libs_
 
 include ':searchuilib'
 project(':searchuilib').projectDir = new File(rootDir, 'platform_frameworks_libs_systemui/searchuilib')
+
+final def PLATFORM_FRAMEWORKS_BASE_PATH = "platform_frameworks_base"
+// 加载本地 module, https://github.com/liu-wanshun/platform_frameworks_base
+if (file("${PLATFORM_FRAMEWORKS_BASE_PATH}/packages/SystemUI/shared").exists()) {
+    // SystemUI shared dependencies
+    include ':wm_shell'
+    project(':wm_shell').projectDir = new File("${PLATFORM_FRAMEWORKS_BASE_PATH}/libs/WindowManager/Shell")
+    include ':SystemUIAnimation'
+    project(':SystemUIAnimation').projectDir = new File("${PLATFORM_FRAMEWORKS_BASE_PATH}/packages/SystemUI/animation")
+    include ':SystemUIPlugin'
+    project(':SystemUIPlugin').projectDir = new File("${PLATFORM_FRAMEWORKS_BASE_PATH}/packages/SystemUI/plugin")
+    include ':PluginCore'
+    project(':PluginCore').projectDir = new File("${PLATFORM_FRAMEWORKS_BASE_PATH}/packages/SystemUI/plugin_core")
+    include ':SystemUIShared'
+    project(':SystemUIShared').projectDir = new File("${PLATFORM_FRAMEWORKS_BASE_PATH}/packages/SystemUI/shared")
+    include ':SystemUIUnfold'
+    project(':SystemUIUnfold').projectDir = new File("${PLATFORM_FRAMEWORKS_BASE_PATH}/packages/SystemUI/unfold")
+    // quickstep compat
+    include ':quickstepcompat'
+    project(':quickstepcompat').projectDir = new File("${PLATFORM_FRAMEWORKS_BASE_PATH}/quickstepcompat")
+    include ':quickstepcompatQ'
+    project(':quickstepcompatQ').projectDir = new File("${PLATFORM_FRAMEWORKS_BASE_PATH}/quickstepcompat/quickstepcompatQ")
+    include ':quickstepcompatR'
+    project(':quickstepcompatR').projectDir = new File("${PLATFORM_FRAMEWORKS_BASE_PATH}/quickstepcompat/quickstepcompatR")
+    include ':quickstepcompatS'
+    project(':quickstepcompatS').projectDir = new File("${PLATFORM_FRAMEWORKS_BASE_PATH}/quickstepcompat/quickstepcompatS")
+    include ':quickstepcompatT'
+    project(':quickstepcompatT').projectDir = new File("${PLATFORM_FRAMEWORKS_BASE_PATH}/quickstepcompat/quickstepcompatT")
+}
