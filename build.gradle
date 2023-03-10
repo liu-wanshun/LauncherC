@@ -228,10 +228,11 @@ android {
 configurations.configureEach {
     resolutionStrategy {
         dependencySubstitution {
-            // use local module
+            cacheChangingModulesFor 0, "seconds"
+            cacheDynamicVersionsFor 0, "seconds"
             def targetProject = findProject(":SystemUIShared")
             if (targetProject != null) {
-                substitute module("com.github.liu-wanshun:launcherlib-systemui-shared:13.0.1") using project(":SystemUIShared")
+                substitute module("com.github.liu-wanshun:launcherlib-systemui-shared:13-SNAPSHOT") using project(":SystemUIShared")
             }
         }
     }
@@ -243,7 +244,7 @@ dependencies {
     implementation libs.androidx.preference
     implementation project(':IconLoader')
     implementation("com.github.ChickenHook:RestrictionBypass:2.2")
-    implementation("com.github.liu-wanshun:launcherlib-systemui-shared:13.0.1")
+    implementation("com.github.liu-wanshun:launcherlib-systemui-shared:13-SNAPSHOT")
     implementation fileTree(dir: "prebuilt", include: 'SystemUI-statsd.jar')
 
 
