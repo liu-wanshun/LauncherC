@@ -242,7 +242,8 @@ dependencies {
     implementation libs.androidx.dynamicanimation
     implementation libs.androidx.recyclerview.recyclerview
     implementation libs.androidx.preference
-    implementation project(':IconLoader')
+    implementation project(':iconloaderlib')
+    implementation project(':viewcapturelib')
     implementation("com.github.ChickenHook:RestrictionBypass:2.2")
     implementation("com.github.liu-wanshun:launcherlib-systemui-shared:13-SNAPSHOT")
     implementation fileTree(dir: "prebuilt", include: 'SystemUI-statsd.jar')

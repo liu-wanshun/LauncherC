@@ -60,6 +60,7 @@ import android.view.MotionEvent;
 import androidx.annotation.BinderThread;
 import androidx.annotation.NonNull;
 
+import com.android.launcher3.Utilities;
 import com.android.launcher3.util.DisplayController;
 import com.android.launcher3.util.DisplayController.DisplayInfoChangeListener;
 import com.android.launcher3.util.DisplayController.Info;
