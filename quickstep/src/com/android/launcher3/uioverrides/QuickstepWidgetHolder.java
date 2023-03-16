@@ -30,6 +30,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 import androidx.annotation.WorkerThread;
 
+import com.android.launcher3.Utilities;
 import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.model.WidgetsModel;
 import com.android.launcher3.util.Thunk;
@@ -158,7 +159,9 @@ public final class QuickstepWidgetHolder extends LauncherWidgetHolder {
         } else {
             widgetView = new LauncherAppWidgetHostView(context);
         }
-        widgetView.setInteractionHandler(mInteractionHandler);
+        if (Utilities.ATLEAST_T && mInteractionHandler != null) {
+            widgetView.setInteractionHandler(mInteractionHandler);
+        }
         widgetView.setAppWidget(appWidgetId, appWidget);
 
         QuickstepWidgetHolderListener listener = sListeners.get(appWidgetId);
@@ -259,7 +262,9 @@ public final class QuickstepWidgetHolder extends LauncherWidgetHolder {
                     protected AppWidgetHost createHost(Context context,
                             @Nullable IntConsumer appWidgetRemovedCallback) {
                         AppWidgetHost host = super.createHost(context, appWidgetRemovedCallback);
-                        host.setInteractionHandler(interactionHandler);
+                        if (Utilities.ATLEAST_T) {
+                            host.setInteractionHandler(interactionHandler);
+                        }
                         return host;
                     }
                 };

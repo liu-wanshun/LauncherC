@@ -212,10 +212,12 @@ public class QuickstepLauncher extends Launcher {
                 new SplitSelectStateController(this, mHandler, getStateManager(),
                         getDepthController(), getStatsLogManager());
         overviewPanel.init(mActionsView, mSplitSelectStateController);
-        mSplitWithKeyboardShortcutController = new SplitWithKeyboardShortcutController(this,
-                mSplitSelectStateController);
-        mSplitToWorkspaceController = new SplitToWorkspaceController(this,
-                mSplitSelectStateController);
+        if (LauncherCApp.isRecentsEnabled()) {
+            mSplitWithKeyboardShortcutController = new SplitWithKeyboardShortcutController(this,
+                    mSplitSelectStateController);
+            mSplitToWorkspaceController = new SplitToWorkspaceController(this,
+                    mSplitSelectStateController);
+        }
         mActionsView.updateDimension(getDeviceProfile(), overviewPanel.getLastComputedTaskSize());
         mActionsView.updateVerticalMargin(DisplayController.getNavigationMode(this));
 
@@ -341,6 +343,10 @@ public class QuickstepLauncher extends Launcher {
     }
 
     protected void onItemClicked(View view) {
+        if (mSplitToWorkspaceController == null) {
+            QuickstepLauncher.super.getItemOnClickListener().onClick(view);
+            return;
+        }
         if (!mSplitToWorkspaceController.handleSecondAppSelectionForSplit(view)) {
             QuickstepLauncher.super.getItemOnClickListener().onClick(view);
         }
@@ -432,7 +438,9 @@ public class QuickstepLauncher extends Launcher {
 
         super.onDestroy();
         mHotseatPredictionController.destroy();
-        mSplitWithKeyboardShortcutController.onDestroy();
+        if (mSplitWithKeyboardShortcutController != null) {
+            mSplitWithKeyboardShortcutController.onDestroy();
+        }
         if (mViewCapture != null) mViewCapture.close();
     }
 
@@ -524,7 +532,7 @@ public class QuickstepLauncher extends Launcher {
                 (QuickstepHolderFactory) LauncherWidgetHolder.HolderFactory.newFactory(this);
         return factory.newInstance(this,
                 appWidgetId -> getWorkspace().removeWidget(appWidgetId),
-                Utilities.ATLEAST_T ? new QuickstepInteractionHandler(this) : null);
+                Utilities.ATLEAST_T && LauncherCApp.isRecentsEnabled() ? new QuickstepInteractionHandler(this) : null);
     }
 
     @Override
@@ -878,6 +886,9 @@ public class QuickstepLauncher extends Launcher {
     @Override
     @BinderThread
     public void enterStageSplitFromRunningApp(boolean leftOrTop) {
+        if (mSplitWithKeyboardShortcutController == null) {
+            return;
+        }
         mSplitWithKeyboardShortcutController.enterStageSplit(leftOrTop);
     }
 

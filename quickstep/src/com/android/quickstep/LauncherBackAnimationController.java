@@ -90,7 +90,7 @@ public class LauncherBackAnimationController {
     private float mBackProgress = 0;
     private boolean mBackInProgress = false;
     private IOnBackInvokedCallback mBackCallback;
-    private BackProgressAnimator mProgressAnimator = new BackProgressAnimator();
+    private BackProgressAnimator mProgressAnimator;
 
     public LauncherBackAnimationController(
             QuickstepLauncher launcher,
@@ -109,6 +109,11 @@ public class LauncherBackAnimationController {
                 R.dimen.swipe_back_window_max_delta_y);
         mCancelInterpolator =
                 AnimationUtils.loadInterpolator(mLauncher, R.interpolator.back_cancel);
+        try {
+            mProgressAnimator = new BackProgressAnimator();
+        } catch (Throwable throwable) {
+            // not 13qpr2
+        }
     }
 
     /**
@@ -121,6 +126,9 @@ public class LauncherBackAnimationController {
             public void onBackCancelled() {
                 handler.post(() -> {
                     resetPositionAnimated();
+                    if (mProgressAnimator == null) {
+                        return;
+                    }
                     mProgressAnimator.reset();
                 });
             }
@@ -129,6 +137,9 @@ public class LauncherBackAnimationController {
             public void onBackInvoked() {
                 handler.post(() -> {
                     startTransition();
+                    if (mProgressAnimator == null) {
+                        return;
+                    }
                     mProgressAnimator.reset();
                 });
             }
@@ -136,6 +147,9 @@ public class LauncherBackAnimationController {
             @Override
             public void onBackProgressed(BackEvent backEvent) {
                 handler.post(() -> {
+                    if (mProgressAnimator == null) {
+                        return;
+                    }
                     mProgressAnimator.onBackProgressed(backEvent);
                 });
             }
@@ -144,6 +158,9 @@ public class LauncherBackAnimationController {
             public void onBackStarted(BackEvent backEvent) {
                 handler.post(() -> {
                     startBack(backEvent);
+                    if (mProgressAnimator == null) {
+                        return;
+                    }
                     mProgressAnimator.onBackStarted(backEvent, event -> {
                         mBackProgress = event.getProgress();
                         // TODO: Update once the interpolation curve spec is finalized.
@@ -181,7 +198,9 @@ public class LauncherBackAnimationController {
         if (mBackCallback != null) {
             SystemUiProxy.INSTANCE.get(mLauncher).clearBackToLauncherCallback(mBackCallback);
         }
-        mProgressAnimator.reset();
+        if (mProgressAnimator != null) {
+            mProgressAnimator.reset();
+        }
         mBackCallback = null;
     }
 
