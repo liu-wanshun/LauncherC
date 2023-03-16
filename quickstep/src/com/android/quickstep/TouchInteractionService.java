@@ -598,8 +598,10 @@ public class TouchInteractionService extends Service
         ProtoTracer.INSTANCE.get(this).stop();
         ProtoTracer.INSTANCE.get(this).remove(this);
 
-        getSystemService(AccessibilityManager.class)
-                .unregisterSystemAction(GLOBAL_ACTION_ACCESSIBILITY_ALL_APPS);
+        if (Utilities.ATLEAST_R) {
+            getSystemService(AccessibilityManager.class)
+                    .unregisterSystemAction(GLOBAL_ACTION_ACCESSIBILITY_ALL_APPS);
+        }
 
         mTaskbarManager.destroy();
         sConnected = false;

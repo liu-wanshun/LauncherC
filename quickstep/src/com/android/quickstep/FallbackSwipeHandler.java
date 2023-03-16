@@ -135,8 +135,13 @@ public class FallbackSwipeHandler extends
     private void setHomeScaleAndAlpha(SurfaceProperties builder,
             RemoteAnimationTarget app, float verticalShift, float alpha) {
         float scale = Utilities.mapRange(verticalShift, 1, mMaxLauncherScale);
-        mTmpMatrix.setScale(scale, scale,
-                app.localBounds.exactCenterX(), app.localBounds.exactCenterY());
+        if (Utilities.ATLEAST_R) {
+            mTmpMatrix.setScale(scale, scale,
+                    app.localBounds.exactCenterX(), app.localBounds.exactCenterY());
+        } else {
+            mTmpMatrix.setScale(scale, scale,
+                    app.sourceContainerBounds.exactCenterX(), app.sourceContainerBounds.exactCenterY());
+        }
         builder.setMatrix(mTmpMatrix).setAlpha(alpha);
     }
 

@@ -23,6 +23,8 @@ import android.content.Context;
 import android.os.SystemClock;
 
 import android.os.Trace;
+
+import com.android.launcher3.Utilities;
 import com.android.launcher3.tracing.LauncherTraceProto;
 import com.android.launcher3.tracing.LauncherTraceEntryProto;
 import com.android.launcher3.tracing.LauncherTraceFileProto;
@@ -52,12 +54,14 @@ public class ProtoTracer implements ProtoTraceParams<MessageLite.Builder,
             ((long) MAGIC_NUMBER_H_VALUE << 32) | MAGIC_NUMBER_L_VALUE;
 
     private final Context mContext;
-    private final FrameProtoTracer<MessageLite.Builder, LauncherTraceFileProto.Builder,
+    private FrameProtoTracer<MessageLite.Builder, LauncherTraceFileProto.Builder,
         LauncherTraceEntryProto.Builder, LauncherTraceProto.Builder> mProtoTracer;
 
     public ProtoTracer(Context context) {
         mContext = context;
-        mProtoTracer = new FrameProtoTracer<>(this);
+        if (Utilities.ATLEAST_R) {
+            mProtoTracer = new FrameProtoTracer<>(this);
+        }
     }
 
     @Override
@@ -110,26 +114,44 @@ public class ProtoTracer implements ProtoTraceParams<MessageLite.Builder,
     }
 
     public void start() {
+        if (mProtoTracer == null) {
+            return;
+        }
         mProtoTracer.start();
     }
 
     public void stop() {
+        if (mProtoTracer == null) {
+            return;
+        }
         mProtoTracer.stop();
     }
 
     public void add(ProtoTraceable<LauncherTraceProto.Builder> traceable) {
+        if (mProtoTracer == null) {
+            return;
+        }
         mProtoTracer.add(traceable);
     }
 
     public void remove(ProtoTraceable<LauncherTraceProto.Builder> traceable) {
+        if (mProtoTracer == null) {
+            return;
+        }
         mProtoTracer.remove(traceable);
     }
 
     public void scheduleFrameUpdate() {
+        if (mProtoTracer == null) {
+            return;
+        }
         mProtoTracer.scheduleFrameUpdate();
     }
 
     public void update() {
+        if (mProtoTracer == null) {
+            return;
+        }
         mProtoTracer.update();
     }
 }

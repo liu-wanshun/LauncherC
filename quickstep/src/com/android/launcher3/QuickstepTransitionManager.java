@@ -419,8 +419,8 @@ public class QuickstepTransitionManager implements OnDeviceProfileChangeListener
             break;
         }
         if (target == null) return new Rect(0, 0, mDeviceProfile.widthPx, mDeviceProfile.heightPx);
-        final Rect bounds = new Rect(target.screenSpaceBounds);
-        if (target.localBounds != null) {
+        final Rect bounds = new Rect(Utilities.ATLEAST_R ? target.screenSpaceBounds : target.sourceContainerBounds);
+        if (Utilities.ATLEAST_R && target.localBounds != null) {
             bounds.set(target.localBounds);
         } else {
             bounds.offsetTo(target.position.x, target.position.y);
@@ -843,12 +843,12 @@ public class QuickstepTransitionManager implements OnDeviceProfileChangeListener
                                 .setCornerRadius(mWindowRadius.value)
                                 .setShadowRadius(mShadowRadius.value);
                     } else if (target.mode == MODE_CLOSING) {
-                        if (target.localBounds != null) {
+                        if (Utilities.ATLEAST_R && target.localBounds != null) {
                             tmpPos.set(target.localBounds.left, target.localBounds.top);
                         } else {
                             tmpPos.set(target.position.x, target.position.y);
                         }
-                        final Rect crop = new Rect(target.screenSpaceBounds);
+                        final Rect crop = new Rect(Utilities.ATLEAST_R ? target.screenSpaceBounds : target.sourceContainerBounds);
                         crop.offsetTo(0, 0);
 
                         if ((rotationChange % 2) == 1) {
@@ -1191,6 +1191,8 @@ public class QuickstepTransitionManager implements OnDeviceProfileChangeListener
             if (!Utilities.ATLEAST_S) {
                 if (target.mode == mode && target.taskId == mLauncher.getTaskId()) {
                     return true;
+                } else {
+                    return false;
                 }
             }
             if (target.mode == mode && target.taskInfo != null
@@ -1243,7 +1245,7 @@ public class QuickstepTransitionManager implements OnDeviceProfileChangeListener
                     RemoteAnimationTarget target = appTargets[i];
                     transaction.forSurface(target.leash)
                             .setAlpha(1f)
-                            .setWindowCrop(target.screenSpaceBounds)
+                            .setWindowCrop(Utilities.ATLEAST_R ? target.screenSpaceBounds : target.sourceContainerBounds)
                             .setCornerRadius(cornerRadius);
                 }
                 surfaceApplier.scheduleApply(transaction);
@@ -1285,6 +1287,9 @@ public class QuickstepTransitionManager implements OnDeviceProfileChangeListener
      * Returns view on launcher that corresponds to the {@param runningTaskTarget}.
      */
     private @Nullable View findLauncherView(RemoteAnimationTarget runningTaskTarget) {
+        if (!Utilities.ATLEAST_S) {
+            return null;
+        }
         if (runningTaskTarget == null || runningTaskTarget.taskInfo == null) {
             return null;
         }
@@ -1473,16 +1478,16 @@ public class QuickstepTransitionManager implements OnDeviceProfileChangeListener
                     RemoteAnimationTarget target = appTargets[i];
                     SurfaceProperties builder = transaction.forSurface(target.leash);
 
-                    if (target.localBounds != null) {
+                    if (Utilities.ATLEAST_R && target.localBounds != null) {
                         tmpPos.set(target.localBounds.left, target.localBounds.top);
                     } else {
                         tmpPos.set(target.position.x, target.position.y);
                     }
 
-                    final Rect crop = new Rect(target.screenSpaceBounds);
+                    final Rect crop = new Rect(Utilities.ATLEAST_R ? target.screenSpaceBounds : target.sourceContainerBounds);
                     crop.offsetTo(0, 0);
                     if (target.mode == MODE_CLOSING) {
-                        tmpRect.set(target.screenSpaceBounds);
+                        tmpRect.set(Utilities.ATLEAST_R ? target.screenSpaceBounds : target.sourceContainerBounds);
                         if ((rotationChange % 2) != 0) {
                             final int right = crop.right;
                             crop.right = crop.bottom;
@@ -1881,7 +1886,7 @@ public class QuickstepTransitionManager implements OnDeviceProfileChangeListener
                 RemoteAnimationTarget target = mAppTargets[i];
                 SurfaceProperties builder = transaction.forSurface(target.leash);
 
-                if (target.localBounds != null) {
+                if (Utilities.ATLEAST_R && target.localBounds != null) {
                     mTmpPos.set(target.localBounds.left, target.localBounds.top);
                 } else {
                     mTmpPos.set(target.position.x, target.position.y);

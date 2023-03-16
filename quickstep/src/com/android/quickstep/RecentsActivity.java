@@ -261,11 +261,15 @@ public final class RecentsActivity extends StatefulActivity<RecentsState> {
 
         final LauncherAnimationRunner wrapper = new LauncherAnimationRunner(
                 mUiHandler, mActivityLaunchAnimationRunner, true /* startAtFrontOfQueue */);
-        final ActivityOptions options = ActivityOptions.makeRemoteAnimation(
+        final ActivityOptions options = Utilities.ATLEAST_T ? ActivityOptions.makeRemoteAnimation(
                 new RemoteAnimationAdapter(wrapper, RECENTS_LAUNCH_DURATION,
                         RECENTS_LAUNCH_DURATION - STATUS_BAR_TRANSITION_DURATION
                                 - STATUS_BAR_TRANSITION_PRE_DELAY),
-                new RemoteTransition(wrapper.toRemoteTransition(), getIApplicationThread()));
+                new RemoteTransition(wrapper.toRemoteTransition(), getIApplicationThread())) :
+                ActivityOptions.makeRemoteAnimation(
+                        new RemoteAnimationAdapter(wrapper, RECENTS_LAUNCH_DURATION,
+                                RECENTS_LAUNCH_DURATION - STATUS_BAR_TRANSITION_DURATION
+                                        - STATUS_BAR_TRANSITION_PRE_DELAY));
         final ActivityOptionsWrapper activityOptions = new ActivityOptionsWrapper(options,
                 onEndCallback);
         if (Utilities.ATLEAST_T) {
@@ -403,9 +407,11 @@ public final class RecentsActivity extends StatefulActivity<RecentsState> {
     private void startHomeInternal() {
         LauncherAnimationRunner runner = new LauncherAnimationRunner(
                 getMainThreadHandler(), mAnimationToHomeFactory, true);
-        ActivityOptions options = ActivityOptions.makeRemoteAnimation(
+        ActivityOptions options = Utilities.ATLEAST_T ? ActivityOptions.makeRemoteAnimation(
                 new RemoteAnimationAdapter(runner, HOME_APPEAR_DURATION, 0),
-                new RemoteTransition(runner.toRemoteTransition(), getIApplicationThread()));
+                new RemoteTransition(runner.toRemoteTransition(), getIApplicationThread())) :
+                ActivityOptions.makeRemoteAnimation(
+                        new RemoteAnimationAdapter(runner, HOME_APPEAR_DURATION, 0));
         startHomeIntentSafely(this, options.toBundle());
     }
 
