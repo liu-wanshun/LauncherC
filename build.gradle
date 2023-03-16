@@ -57,6 +57,9 @@ final def buildCommit = providers.exec {
     commandLine('git', 'rev-parse', '--short=7', 'HEAD')
 }.standardOutput.asText.get().trim()
 
+final def quickstepMinSdk = "29"
+final def quickstepMaxSdk = "33"
+
 android {
     namespace "com.android.launcher3"
     defaultConfig {
@@ -64,6 +67,10 @@ android {
         //语义化版本:https://semver.org/lang/zh-CN/
         versionName "13.0.1-alpha.1"
         buildConfigField "boolean", "QSB_ON_FIRST_SCREEN", "false"
+        manifestPlaceholders.quickstepMinSdk = quickstepMinSdk
+        manifestPlaceholders.quickstepMaxSdk = quickstepMaxSdk
+        buildConfigField "int", "QUICKSTEP_MIN_SDK", quickstepMinSdk
+        buildConfigField "int", "QUICKSTEP_MAX_SDK", quickstepMaxSdk
     }
 
     android.applicationVariants.configureEach { variant ->

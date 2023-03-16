@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.ComponentName
 import android.os.Build
 import android.util.Log
+import com.android.launcher3.BuildConfig
 import com.android.quickstep.RecentsActivity
 
 class LauncherCApp : Application() {
@@ -31,7 +32,7 @@ private const val TAG = "LauncherCApp"
 @SuppressLint("DiscouragedApi")
 private fun LauncherCApp.checkRecentsComponent(): Boolean {
 
-    if (Build.VERSION.SDK_INT != 33) {
+    if (Build.VERSION.SDK_INT !in BuildConfig.QUICKSTEP_MIN_SDK..BuildConfig.QUICKSTEP_MAX_SDK) {
         Log.d(TAG, "API ${Build.VERSION.SDK_INT} unsupported, disabling recents")
         return false
     }

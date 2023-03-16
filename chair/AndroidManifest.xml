@@ -11,5 +11,12 @@
             android:authorities="${applicationId}.restrictionbypass"
             tools:node="remove" />
 
+        <meta-data
+            android:name="xyz.paphonb.quickstepswitcher.minSdk"
+            android:value="${quickstepMinSdk}" />
+
+        <meta-data
+            android:name="xyz.paphonb.quickstepswitcher.maxSdk"
+            android:value="${quickstepMaxSdk}" />
     </application>
 </manifest>
