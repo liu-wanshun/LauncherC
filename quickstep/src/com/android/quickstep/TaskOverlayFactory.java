@@ -120,6 +120,7 @@ public class TaskOverlayFactory implements ResourceBasedOverride {
     /** Note that these will be shown in order from top to bottom, if available for the task. */
     private static final TaskShortcutFactory[] MENU_OPTIONS = new TaskShortcutFactory[]{
             TaskShortcutFactory.APP_INFO,
+            app.lws.launcherc.quickstep.TaskShortcutFactory.LEGACY_SPLIT,
             TaskShortcutFactory.SPLIT_SELECT,
             TaskShortcutFactory.PIN,
             TaskShortcutFactory.INSTALL,

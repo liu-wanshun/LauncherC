@@ -252,6 +252,10 @@ public interface TaskShortcutFactory {
         @Override
         public List<SystemShortcut> getShortcuts(BaseDraggingActivity activity,
                 TaskIdAttributeContainer taskContainer) {
+            if (!Utilities.ATLEAST_T) {
+                // use legacy split screen
+                return null;
+            }
             DeviceProfile deviceProfile = activity.getDeviceProfile();
             final Task task  = taskContainer.getTask();
             final TaskView taskView = taskContainer.getTaskView();

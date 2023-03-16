@@ -875,10 +875,10 @@ public class QuickstepLauncher extends Launcher {
         }
         if (Utilities.ATLEAST_T) {
             activityOptions.options.setSplashScreenStyle(SplashScreen.SPLASH_SCREEN_STYLE_ICON);
+            activityOptions.options.setLaunchDisplayId(
+                    (v != null && v.getDisplay() != null) ? v.getDisplay().getDisplayId()
+                            : Display.DEFAULT_DISPLAY);
         }
-        activityOptions.options.setLaunchDisplayId(
-                (v != null && v.getDisplay() != null) ? v.getDisplay().getDisplayId()
-                        : Display.DEFAULT_DISPLAY);
         addLaunchCookie(item, activityOptions.options);
         return activityOptions;
     }
