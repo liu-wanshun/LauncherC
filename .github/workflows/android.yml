@@ -5,8 +5,12 @@ on:
   workflow_call:
   push:
     branches: [ "c13" ]
+    paths-ignore:
+      - 'README.md'
   pull_request:
     branches: [ "c13" ]
+    paths-ignore:
+      - 'README.md'
 
 jobs:
   build:
