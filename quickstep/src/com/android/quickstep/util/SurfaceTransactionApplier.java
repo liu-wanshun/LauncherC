@@ -27,7 +27,6 @@ import android.view.ViewRootImpl;
 
 import com.android.launcher3.Utilities;
 import com.android.quickstep.RemoteAnimationTargets.ReleaseCheck;
-import com.android.systemui.shared.system.SyncRtSurfaceTransactionApplierCompat.SurfaceParams;
 
 import java.util.function.Consumer;
 
@@ -72,18 +71,12 @@ public class SurfaceTransactionApplier extends ReleaseCheck {
      * @param params The surface parameters to apply. DO NOT MODIFY the list after passing into
      *               this method to avoid synchronization issues.
      */
-    public void scheduleApply(final SurfaceParams... params) {
+    public void scheduleApply(SurfaceTransaction params) {
         View view = mTargetViewRootImpl.getView();
         if (view == null) {
             return;
         }
-        Transaction t = new Transaction();
-        for (int i = params.length - 1; i >= 0; i--) {
-            SurfaceParams surfaceParams = params[i];
-            if (surfaceParams.surface.isValid()) {
-                surfaceParams.applyTo(t);
-            }
-        }
+        Transaction t = params.getTransaction();
 
         mLastSequenceNumber++;
         final int toApplySeqNo = mLastSequenceNumber;
@@ -111,7 +104,7 @@ public class SurfaceTransactionApplier extends ReleaseCheck {
     }
 
     /**
-     * Creates an instance of SyncRtSurfaceTransactionApplier, deferring until the target view is
+     * Creates an instance of SurfaceTransactionApplier, deferring until the target view is
      * attached if necessary.
      */
     public static void create(
