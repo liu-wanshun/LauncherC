@@ -1418,6 +1418,7 @@ public abstract class AbsSwipeUpHandler<T extends StatefulActivity<S>,
                     ? mRecentsAnimationTargets.findTask(mGestureState.getRunningTaskId())
                     : null;
             final ArrayList<IBinder> cookies = runningTaskTarget != null
+                    && Utilities.ATLEAST_S
                     ? runningTaskTarget.taskInfo.launchCookies
                     : new ArrayList<>();
             boolean isTranslucent = runningTaskTarget != null && runningTaskTarget.isTranslucent;
@@ -1426,6 +1427,7 @@ public abstract class AbsSwipeUpHandler<T extends StatefulActivity<S>,
                     && runningTaskTarget.leash.isValid();
             boolean appCanEnterPip = !mDeviceState.isPipActive()
                     && hasValidLeash
+                    && Utilities.ATLEAST_T
                     && runningTaskTarget.allowEnterPip
                     && runningTaskTarget.taskInfo.pictureInPictureParams != null
                     && runningTaskTarget.taskInfo.pictureInPictureParams.isAutoEnterEnabled();

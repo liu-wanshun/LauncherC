@@ -433,7 +433,16 @@ public class TouchInteractionService extends Service
             return;
         }
 
-        mInputMonitorCompat = new InputMonitorCompat("swipe-up", mDeviceState.getDisplayId());
+        if (Utilities.ATLEAST_S) {
+            mInputMonitorCompat = new InputMonitorCompat("swipe-up", mDeviceState.getDisplayId());
+        } else {
+            if (!SystemUiProxy.INSTANCE.get(this).isActive()) {
+                return;
+            }
+            Bundle bundle = SystemUiProxy.INSTANCE.get(this).monitorGestureInput("swipe-up",
+                    mDeviceState.getDisplayId());
+            mInputMonitorCompat = InputMonitorCompat.fromBundle(bundle, "extra_input_monitor");
+        }
         mInputEventReceiver = mInputMonitorCompat.getInputReceiver(Looper.getMainLooper(),
                 mMainChoreographer, this::onInputEvent);
 

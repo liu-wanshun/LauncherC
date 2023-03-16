@@ -1254,10 +1254,14 @@ public class QuickstepTransitionManager implements OnDeviceProfileChangeListener
 
     private static int getRotationChange(RemoteAnimationTarget[] appTargets) {
         int rotationChange = 0;
-        for (RemoteAnimationTarget target : appTargets) {
-            if (Math.abs(target.rotationChange) > Math.abs(rotationChange)) {
-                rotationChange = target.rotationChange;
+        try {
+            for (RemoteAnimationTarget target : appTargets) {
+                if (Math.abs(target.rotationChange) > Math.abs(rotationChange)) {
+                    rotationChange = target.rotationChange;
+                }
             }
+        } catch (Throwable throwable) {
+            // not android13-qpr2
         }
         return rotationChange;
     }
