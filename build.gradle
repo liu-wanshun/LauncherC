@@ -1,9 +1,10 @@
 import com.android.build.gradle.BasePlugin
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id "com.android.application" version "7.3.1"
-    id "com.android.library" version "7.3.1" apply false
+    id "com.android.application" version "7.4.2"
+    id "com.android.library" version "7.4.2" apply false
     id "org.jetbrains.kotlin.android" version "1.8.10"
     id "com.google.protobuf" version "0.9.1"
 }
@@ -32,9 +33,7 @@ allprojects {
     }
 
     tasks.withType(KotlinCompile).configureEach {
-        kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_1_8
-        }
+        compilerOptions.jvmTarget = JvmTarget.JVM_1_8
     }
 
     ext.addFrameworkJar = { String path ->
@@ -44,10 +43,10 @@ allprojects {
         }
         gradle.projectsEvaluated {
             tasks.withType(JavaCompile).configureEach {
-                options.bootstrapClasspath = files([frameworkJar] + (options.bootstrapClasspath.files as Iterable<File>))
+                options.bootstrapClasspath = files(frameworkJar, options.bootstrapClasspath)
             }
             tasks.withType(KotlinCompile).configureEach {
-                it.libraries.setFrom(files([frameworkJar] + it.libraries.getFrom()))
+                libraries.setFrom(files(frameworkJar, libraries))
             }
         }
     }

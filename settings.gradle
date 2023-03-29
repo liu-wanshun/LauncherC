@@ -21,7 +21,7 @@ dependencyResolutionManagement {
         maven { url "https://maven.aliyun.com/repository/public" }
     }
 }
-
+rootProject.name = "LauncherC"
 include ':iconloaderlib'
 project(':iconloaderlib').projectDir = new File(rootDir, 'platform_frameworks_libs_systemui/iconloaderlib')
 
