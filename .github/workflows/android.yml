@@ -48,7 +48,7 @@ jobs:
       - name: Build with Gradle
         env:
           USERNAME: ${{ github.actor }}
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew assembleChairWithQuickstepRelease
 
       - name: Upload artifact

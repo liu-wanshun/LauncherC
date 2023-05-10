@@ -11,10 +11,17 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven {
+            name = "GithubPackagesRepo"
             url = "https://maven.pkg.github.com/liu-wanshun/platform_frameworks_base"
             credentials {
-                username = System.getenv("USERNAME")
-                password = System.getenv("TOKEN")
+                /*
+                Github Action 中使用 System.getenv()
+                本地在gradle.properties中声明"gpr.user"和"gpr.key",详见:
+                1:https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_configuration_properties
+                2:https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-gradle-registry#using-a-published-package
+                **/
+                username = providers.gradleProperty("gpr.user").orNull ?: System.getenv("USERNAME")
+                password = providers.gradleProperty("gpr.key").orNull ?: System.getenv("GITHUB_TOKEN")
             }
         }
         maven { url "https://jitpack.io" }
