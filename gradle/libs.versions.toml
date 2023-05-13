@@ -1,7 +1,8 @@
 #https://docs.gradle.org/current/userguide/platforms.html
 [versions]
-gradlePlugin-android = "7.3.1"
-kotlin = "1.8.10"
+gradlePlugin-android = "8.0.1"
+kotlin = "1.8.20"
+protobuf = "0.9.1"
 androidx-activity = "1.6.1"
 androidx-lifecycle = "2.6.0"
 androidx-room = "2.5.0"
@@ -14,6 +15,7 @@ okio = "3.2.0"
 android-application = { id = "com.android.application", version.ref = "gradlePlugin-android" }
 android-library = { id = "com.android.library", version.ref = "gradlePlugin-android" }
 kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+protobuf = { id = "com.google.protobuf", version.ref = "protobuf" }
 
 
 [libraries]

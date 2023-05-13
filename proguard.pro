@@ -65,3 +65,41 @@
 -keep class org.chickenhook.restrictionbypass.** { *; }
 
 -keep class * extends com.google.protobuf.GeneratedMessageLite { *; }
+
+# Please add these rules to your existing keep rules in order to suppress warnings.
+# This is generated automatically by the Android Gradle plugin.
+-dontwarn android.appwidget.AppWidgetHost$AppWidgetHostListener
+-dontwarn android.content.pm.IPackageManager
+-dontwarn android.content.pm.LauncherApps$AppUsageLimit
+-dontwarn android.content.pm.ParceledListSlice
+-dontwarn android.content.pm.UserInfo
+-dontwarn android.hardware.devicestate.DeviceStateManager$DeviceStateCallback
+-dontwarn android.hardware.devicestate.DeviceStateManager$FoldStateListener
+-dontwarn android.hardware.devicestate.DeviceStateManager
+-dontwarn android.media.AudioSystem
+-dontwarn android.media.permission.SafeCloseable
+-dontwarn android.metrics.LogMaker
+-dontwarn android.provider.SearchIndexablesContract
+-dontwarn android.provider.SearchIndexablesProvider
+-dontwarn android.service.notification.SnoozeCriterion
+-dontwarn android.util.MathUtils
+-dontwarn android.util.Pools$SynchronizedPool
+-dontwarn android.util.RotationUtils
+-dontwarn android.util.StatsEvent$Builder
+-dontwarn android.util.StatsEvent
+-dontwarn android.widget.RemoteViews$InteractionHandler
+-dontwarn com.android.internal.annotations.VisibleForTesting
+-dontwarn com.android.internal.app.IVoiceInteractionManagerService$Stub
+-dontwarn com.android.internal.app.IVoiceInteractionManagerService
+-dontwarn com.android.internal.graphics.ColorUtils
+-dontwarn com.android.internal.jank.InteractionJankMonitor$Configuration$Builder
+-dontwarn com.android.internal.jank.InteractionJankMonitor
+-dontwarn com.android.internal.logging.InstanceId
+-dontwarn com.android.internal.logging.InstanceIdSequence
+-dontwarn com.android.internal.logging.UiEventLogger$UiEventEnum
+-dontwarn com.android.internal.logging.UiEventLogger
+-dontwarn com.android.internal.logging.UiEventLoggerImpl
+-dontwarn com.android.internal.os.SomeArgs
+-dontwarn com.android.internal.policy.ScreenDecorationsUtils
+-dontwarn com.android.internal.view.RotationPolicy
+-dontwarn javax.annotation.Nullable
