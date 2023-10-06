@@ -6,7 +6,6 @@ import android.content.ComponentName
 import android.os.Build
 import android.util.Log
 import com.android.launcher3.BuildConfig
-import com.android.quickstep.RecentsActivity
 
 class LauncherCApp : Application() {
     override fun onCreate() {
@@ -50,7 +49,7 @@ private fun LauncherCApp.checkRecentsComponent(): Boolean {
     }
 
     val isRecentsComponent = recentsComponent.packageName == packageName
-            && recentsComponent.className == RecentsActivity::class.java.name
+            && recentsComponent.className == "com.android.quickstep.RecentsActivity"
     if (!isRecentsComponent) {
         Log.d(TAG, "config_recentsComponentName ($recentsComponent) is not this Launcher, disabling recents")
         return false

@@ -4,16 +4,16 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id "com.android.application" version '8.0.1'
-    id "com.android.library" version '8.0.1' apply false
-    id "org.jetbrains.kotlin.android" version "1.8.20"
+    id "com.android.application" version '8.1.2'
+    id "com.android.library" version '8.1.2' apply false
+    id "org.jetbrains.kotlin.android" version "1.9.10"
     id "com.google.protobuf" version "0.9.1"
 }
 
 allprojects {
     plugins.withType(AndroidBasePlugin).configureEach {
         project.android {
-            compileSdk 33
+            compileSdk 34
             defaultConfig {
                 minSdk 28
                 targetSdk 30
@@ -77,6 +77,7 @@ android {
         //语义化版本:https://semver.org/lang/zh-CN/
         versionName "13.0.1-alpha.1"
         buildConfigField "boolean", "QSB_ON_FIRST_SCREEN", "false"
+        buildConfigField "boolean", "IS_STUDIO_BUILD", "true"
         manifestPlaceholders.quickstepMinSdk = quickstepMinSdk
         manifestPlaceholders.quickstepMaxSdk = quickstepMaxSdk
         buildConfigField "int", "QUICKSTEP_MIN_SDK", quickstepMinSdk
@@ -112,9 +113,11 @@ android {
         }
         debug {
             minifyEnabled false
+            buildConfigField "boolean", "IS_DEBUG_DEVICE", "true"
         }
         release {
             minifyEnabled true
+            buildConfigField "boolean", "IS_DEBUG_DEVICE", "false"
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.pro")
         }
     }
@@ -169,7 +172,7 @@ android {
     sourceSets {
         main {
             res.srcDirs = ['res']
-            java.srcDirs = ['src', 'src_plugins']
+            java.srcDirs = ['src', 'src_plugins',"tests/shared"]
             manifest.srcFile 'AndroidManifest-common.xml'
             proto {
                 srcDirs = ['protos/', 'quickstep/protos_overrides/']
@@ -211,6 +214,7 @@ android {
 
         chairWithQuickstep {
             manifest.srcFile "quickstep/AndroidManifest-launcher.xml"
+            java.srcDirs = ["chair/quickstep"]
         }
 
 /*        l3go {

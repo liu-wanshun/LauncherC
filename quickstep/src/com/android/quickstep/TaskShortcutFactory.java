@@ -18,7 +18,6 @@ package com.android.quickstep;
 
 import static android.app.WindowConfiguration.WINDOWING_MODE_FREEFORM;
 
-import static com.android.launcher3.config.FeatureFlags.ENABLE_OVERVIEW_SELECTIONS;
 import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_SYSTEM_SHORTCUT_FREE_FORM_TAP;
 
 import android.app.Activity;
@@ -301,7 +300,8 @@ public interface TaskShortcutFactory {
                 return null;
             }
 
-            return Collections.singletonList(new FreeformSystemShortcut(R.drawable.ic_split_screen,
+            return Collections.singletonList(new FreeformSystemShortcut(
+                    R.drawable.ic_caption_desktop_button_foreground,
                     R.string.recent_task_option_freeform, activity, taskContainer,
                     LAUNCHER_SYSTEM_SHORTCUT_FREE_FORM_TAP));
         }
@@ -397,10 +397,7 @@ public interface TaskShortcutFactory {
                     taskContainer.getThumbnailView().getTaskOverlay()
                             .getModalStateSystemShortcut(
                                     taskContainer.getItemInfo(), taskContainer.getTaskView());
-            if (ENABLE_OVERVIEW_SELECTIONS.get()) {
-                return createSingletonShortcutList(modalStateSystemShortcut);
-            }
-            return null;
+            return createSingletonShortcutList(modalStateSystemShortcut);
         }
     };
 }
