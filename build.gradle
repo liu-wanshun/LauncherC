@@ -64,24 +64,17 @@ allprojects {
 }
 
 final def buildCommit = providers.exec {
-    commandLine('git', 'rev-parse', '--short=7', 'HEAD')
+    commandLine("git", "describe", "--match=liu_wanshun", "--always", "--abbrev=8", "--dirty")
 }.standardOutput.asText.get().trim()
-
-final def quickstepMinSdk = "29"
-final def quickstepMaxSdk = "33"
 
 android {
     namespace "com.android.launcher3"
     defaultConfig {
         versionCode 1
         //语义化版本:https://semver.org/lang/zh-CN/
-        versionName "13.0.1-alpha.1"
+        versionName "14.0.1-alpha.1"
         buildConfigField "boolean", "QSB_ON_FIRST_SCREEN", "false"
         buildConfigField "boolean", "IS_STUDIO_BUILD", "true"
-        manifestPlaceholders.quickstepMinSdk = quickstepMinSdk
-        manifestPlaceholders.quickstepMaxSdk = quickstepMaxSdk
-        buildConfigField "int", "QUICKSTEP_MIN_SDK", quickstepMinSdk
-        buildConfigField "int", "QUICKSTEP_MAX_SDK", quickstepMaxSdk
     }
 
     buildFeatures {
@@ -122,16 +115,9 @@ android {
         }
     }
 
-    // The flavor dimensions for build variants (e.g. aospWithQuickstep, aospWithoutQuickstep)
-    // See: https://developer.android.com/studio/build/build-variants#flavor-dimensions
     flavorDimensions += ["app", "recents"]
 
     productFlavors {
-/*        aosp {
-            dimension "app"
-            applicationId 'com.android.launcher3'
-            testApplicationId 'com.android.launcher3.tests'
-        }*/
 
         chair {
             dimension "app"
@@ -141,15 +127,9 @@ android {
         }
 
         configureEach {
-            resValue("string", "quickstep_component", "${applicationId}/com.android.launcher3.uioverrides.QuickstepLauncher")
+            //resValue("string", "quickstep_component", "${applicationId}/com.android.launcher3.uioverrides.QuickstepLauncher")
             resValue("string", "launcher_component", "${applicationId}/com.android.launcher3.Launcher")
         }
-
-/*        l3go {
-            dimension "app"
-            applicationId 'com.android.launcher3'
-            testApplicationId 'com.android.launcher3.tests'
-        }*/
 
         withQuickstep {
             dimension "recents"
@@ -162,44 +142,15 @@ android {
         }
     }
 
-    // Disable release builds for now
-    /*  android.variantFilter { variant ->
-          if (variant.buildType.name.endsWith('release')) {
-              variant.setIgnore(true)
-          }
-      }*/
-
     sourceSets {
         main {
             res.srcDirs = ['res']
-            java.srcDirs = ['src', 'src_plugins',"tests/shared"]
+            java.srcDirs = ['src', 'src_plugins', "tests/shared"]
             manifest.srcFile 'AndroidManifest-common.xml'
             proto {
                 srcDirs = ['protos/', 'quickstep/protos_overrides/']
             }
         }
-
-/*        androidTest {
-            res.srcDirs = ['tests/res']
-            java.srcDirs = ['tests/src', 'tests/tapl']
-            manifest.srcFile "tests/AndroidManifest-common.xml"
-        }
-
-        androidTestDebug {
-            manifest.srcFile "tests/AndroidManifest.xml"
-        }
-
-        aosp {
-            java.srcDirs = ['src_flags', 'src_shortcuts_overrides']
-        }
-
-        aospWithoutQuickstep {
-            manifest.srcFile "AndroidManifest.xml"
-        }
-
-        aospWithQuickstep {
-            manifest.srcFile "quickstep/AndroidManifest-launcher.xml"
-        }*/
 
         chair {
             java.srcDirs = ["src_flags", "src_shortcuts_overrides", "chair/src"]
@@ -217,20 +168,6 @@ android {
             java.srcDirs = ["chair/quickstep"]
         }
 
-/*        l3go {
-            res.srcDirs = ['go/res']
-            java.srcDirs = ['go/src']
-            manifest.srcFile "go/AndroidManifest.xml"
-        }
-
-        l3goWithoutQuickstepDebug {
-            manifest.srcFile "AndroidManifest.xml"
-        }
-
-        l3goWithQuickstepDebug {
-            manifest.srcFile "quickstep/AndroidManifest-launcher.xml"
-        }*/
-
         withoutQuickstep {
             java.srcDirs = ['src_ui_overrides']
         }
@@ -245,29 +182,15 @@ android {
     addFrameworkJar('framework-13.jar')
 }
 
-configurations.configureEach {
-    resolutionStrategy {
-        dependencySubstitution {
-            cacheChangingModulesFor 0, "seconds"
-            cacheDynamicVersionsFor 0, "seconds"
-            def targetProject = findProject(":SystemUIShared")
-            if (targetProject != null) {
-                substitute module("com.github.liu-wanshun:launcherlib-systemui-shared:13-SNAPSHOT") using project(":SystemUIShared")
-            }
-        }
-    }
-}
 dependencies {
     implementation libs.androidx.lifecycle.viewmodel
     implementation libs.androidx.dynamicanimation
     implementation libs.androidx.recyclerview.recyclerview
     implementation libs.androidx.preference
     implementation project(':iconloaderlib')
-    //implementation project(':viewcapturelib')
     implementation("com.github.ChickenHook:RestrictionBypass:2.2")
-    implementation("com.github.liu-wanshun:launcherlib-systemui-shared:13-SNAPSHOT")
+    implementation("com.github.liu-wanshun:launcherlib-plugincore:13-SNAPSHOT")
     implementation fileTree(dir: "prebuilt", include: 'SystemUI-statsd.jar')
-
 
     api libs.airbnb.lottie
 

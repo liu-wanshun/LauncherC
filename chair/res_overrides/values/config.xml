@@ -4,6 +4,5 @@
 
     <string-array name="filtered_components">
         <item>@string/launcher_component</item>
-        <item>@string/quickstep_component</item>
     </string-array>
 </resources>
