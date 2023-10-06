@@ -6,7 +6,7 @@
 基于 AOSP [Launcher3](https://android.googlesource.com/platform/packages/apps/Launcher3) 开发，支持Android Studio / IDEA
 编译。
 
-Sync to tag:`android-13.0.0_r75`
+Sync to tag:`android-14.0.0_r1`
 
 不支持`QuickStep`,`QuickStep`请转[c13](https://github.com/liu-wanshun/LauncherC/tree/c13)分支
 

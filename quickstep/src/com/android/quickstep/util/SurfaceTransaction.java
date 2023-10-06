@@ -110,6 +110,15 @@ public class SurfaceTransaction {
             }
             return this;
         }
+
+        /**
+         * Requests to show the given surface.
+         * @return this Builder
+         */
+        public SurfaceProperties setShow() {
+            mTransaction.show(mSurface);
+            return this;
+        }
     }
 
     /**

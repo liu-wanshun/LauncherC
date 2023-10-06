@@ -20,8 +20,8 @@ allprojects {
                 vectorDrawables.useSupportLibrary = true
             }
             compileOptions {
-                sourceCompatibility JavaVersion.VERSION_1_8
-                targetCompatibility JavaVersion.VERSION_1_8
+                sourceCompatibility JavaVersion.VERSION_17
+                targetCompatibility JavaVersion.VERSION_17
             }
             lint {
                 abortOnError true
@@ -29,7 +29,7 @@ allprojects {
             }
         }
         project.dependencies {
-            implementation 'androidx.core:core-ktx:1.9.0'
+            implementation 'androidx.core:core-ktx:1.12.0'
         }
     }
     plugins.withType(LibraryPlugin).configureEach {
@@ -44,7 +44,7 @@ allprojects {
     }
 
     tasks.withType(KotlinCompile).configureEach {
-        compilerOptions.jvmTarget = JvmTarget.JVM_1_8
+        compilerOptions.jvmTarget = JvmTarget.JVM_17
     }
 
     ext.addFrameworkJar = { String path ->
@@ -263,7 +263,7 @@ dependencies {
     implementation libs.androidx.recyclerview.recyclerview
     implementation libs.androidx.preference
     implementation project(':iconloaderlib')
-    implementation project(':viewcapturelib')
+    //implementation project(':viewcapturelib')
     implementation("com.github.ChickenHook:RestrictionBypass:2.2")
     implementation("com.github.liu-wanshun:launcherlib-systemui-shared:13-SNAPSHOT")
     implementation fileTree(dir: "prebuilt", include: 'SystemUI-statsd.jar')

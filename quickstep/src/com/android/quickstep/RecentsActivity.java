@@ -145,7 +145,9 @@ public final class RecentsActivity extends StatefulActivity<RecentsState> {
 
     private void onTISConnected(TouchInteractionService.TISBinder binder) {
         mTaskbarManager = binder.getTaskbarManager();
-        mTaskbarManager.setActivity(this);
+        if (mTaskbarManager != null) {
+            mTaskbarManager.setActivity(this);
+        }
     }
 
     @Override
@@ -268,7 +270,8 @@ public final class RecentsActivity extends StatefulActivity<RecentsState> {
                 new RemoteAnimationAdapter(wrapper, RECENTS_LAUNCH_DURATION,
                         RECENTS_LAUNCH_DURATION - STATUS_BAR_TRANSITION_DURATION
                                 - STATUS_BAR_TRANSITION_PRE_DELAY),
-                new RemoteTransition(wrapper.toRemoteTransition(), getIApplicationThread())) :
+                new RemoteTransition(wrapper.toRemoteTransition(), getIApplicationThread(),
+                        "LaunchFromRecents")) :
                 ActivityOptions.makeRemoteAnimation(
                         new RemoteAnimationAdapter(wrapper, RECENTS_LAUNCH_DURATION,
                                 RECENTS_LAUNCH_DURATION - STATUS_BAR_TRANSITION_DURATION
@@ -412,7 +415,8 @@ public final class RecentsActivity extends StatefulActivity<RecentsState> {
                 getMainThreadHandler(), mAnimationToHomeFactory, true);
         ActivityOptions options = Utilities.ATLEAST_T ? ActivityOptions.makeRemoteAnimation(
                 new RemoteAnimationAdapter(runner, HOME_APPEAR_DURATION, 0),
-                new RemoteTransition(runner.toRemoteTransition(), getIApplicationThread())) :
+                new RemoteTransition(runner.toRemoteTransition(), getIApplicationThread(),
+                        "StartHomeFromRecents")) :
                 ActivityOptions.makeRemoteAnimation(
                         new RemoteAnimationAdapter(runner, HOME_APPEAR_DURATION, 0));
         startHomeIntentSafely(this, options.toBundle());
