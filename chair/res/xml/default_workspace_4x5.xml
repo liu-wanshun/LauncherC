@@ -2,6 +2,15 @@
 
 <favorites xmlns:launcher="http://schemas.android.com/apk/res-auto/com.android.launcher3">
 
+    <appwidget
+        launcher:className="app.lws.launcherc.TimeAppWidget"
+        launcher:packageName="app.lws.launcherc"
+        launcher:screen="0"
+        launcher:spanX="2"
+        launcher:spanY="1"
+        launcher:x="0"
+        launcher:y="0" />
+
     <!-- Hotseat (We use the screen as the position of the item in the hotseat) -->
     <!-- Dialer, Messaging, [Maps/Music], Browser, Camera -->
     <resolve

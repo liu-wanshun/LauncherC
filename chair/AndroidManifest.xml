@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.android.launcher3">
+
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
 
     <application android:name="app.lws.launcherc.LauncherCApp">
 
@@ -10,5 +11,18 @@
             android:name="org.chickenhook.restrictionbypass.BypassProvider"
             android:authorities="${applicationId}.restrictionbypass"
             tools:node="remove" />
+
+        <receiver
+            android:name="app.lws.launcherc.TimeAppWidget"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.LOCALE_CHANGED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/time_app_widget_info" />
+        </receiver>
     </application>
 </manifest>

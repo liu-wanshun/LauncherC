@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:initialLayout="@layout/time_app_widget"
+    android:minWidth="110dp"
+    android:minHeight="40dp"
+    android:previewImage="@drawable/time_appwidget_preview"
+    android:previewLayout="@layout/time_app_widget"
+    android:resizeMode="horizontal|vertical"
+    android:updatePeriodMillis="86400000"
+    android:widgetCategory="home_screen" />

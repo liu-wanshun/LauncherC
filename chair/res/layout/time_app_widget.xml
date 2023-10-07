@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <TextClock
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:format12Hour="h:mm"
+        android:format24Hour="H:mm"
+        android:textSize="56sp"
+        tools:text="10:05" />
+
+    <TextClock
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/time"
+        android:format12Hour="MM/dd EEEa"
+        android:format24Hour="MM/dd EEE"
+        android:textSize="16sp"
+        tools:text="10/7 周六下午" />
+
+</RelativeLayout>
