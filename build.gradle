@@ -75,6 +75,7 @@ android {
         versionName "14.0.1-alpha.1"
         buildConfigField "boolean", "QSB_ON_FIRST_SCREEN", "false"
         buildConfigField "boolean", "IS_STUDIO_BUILD", "true"
+        buildConfigField "boolean", "QSB_ON_HOTSEAT", "true"
     }
 
     buildFeatures {

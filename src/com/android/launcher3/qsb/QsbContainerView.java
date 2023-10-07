@@ -42,6 +42,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 
+import com.android.launcher3.BuildConfig;
 import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherPrefs;
@@ -290,7 +291,7 @@ public class QsbContainerView extends FrameLayout {
         }
 
         public boolean isQsbEnabled() {
-            return FeatureFlags.QSB_ON_FIRST_SCREEN;
+            return FeatureFlags.QSB_ON_FIRST_SCREEN || BuildConfig.QSB_ON_HOTSEAT;
         }
 
         protected Bundle createBindOptions() {
