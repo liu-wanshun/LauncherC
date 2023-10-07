@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="qsb_widget_height">48dp</dimen>
+    <dimen name="qsb_shadow_height">8dp</dimen>
+    <dimen name="hotseat_qsb_space_default">24</dimen>
+</resources>
