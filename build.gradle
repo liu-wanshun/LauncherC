@@ -140,6 +140,7 @@ android {
 
         withoutQuickstep {
             dimension "recents"
+            isDefault true
         }
     }
 
