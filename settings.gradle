@@ -66,3 +66,4 @@ if (file("${PLATFORM_FRAMEWORKS_BASE_PATH}/packages/SystemUI/shared").exists()) 
     include ':quickstepcompatT'
     project(':quickstepcompatT').projectDir = new File("${PLATFORM_FRAMEWORKS_BASE_PATH}/quickstepcompat/quickstepcompatT")
 }
+include ':recents_rro'

@@ -28,9 +28,6 @@ allprojects {
                 checkReleaseBuilds false
             }
         }
-        project.dependencies {
-            implementation 'androidx.core:core-ktx:1.9.0'
-        }
     }
     plugins.withType(LibraryPlugin).configureEach {
         project.android {
@@ -40,6 +37,9 @@ allprojects {
                     withJavadocJar()
                 }
             }
+        }
+        project.dependencies {
+            implementation 'androidx.core:core-ktx:1.9.0'
         }
     }
 
