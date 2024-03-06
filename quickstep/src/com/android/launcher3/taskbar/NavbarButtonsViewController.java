@@ -216,7 +216,7 @@ public class NavbarButtonsViewController implements TaskbarControllers.LoggableT
         mNavButtonsView.getLayoutParams().height = p.y;
 
         mIsImeRenderingNavButtons =
-                InputMethodService.canImeRenderGesturalNavButtons() && mContext.imeDrawsImeNavBar();
+                Utilities.ATLEAST_T && InputMethodService.canImeRenderGesturalNavButtons() && mContext.imeDrawsImeNavBar();
         if (!mIsImeRenderingNavButtons) {
             // IME switcher
             View imeSwitcherButton = addButton(R.drawable.ic_ime_switcher, BUTTON_IME_SWITCH,

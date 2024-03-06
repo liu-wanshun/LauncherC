@@ -252,7 +252,7 @@ public class SplitSelectStateController {
             final RemoteSplitLaunchAnimationRunner animationRunner =
                     new RemoteSplitLaunchAnimationRunner(taskId1, taskId2, callback);
             final RemoteAnimationAdapter adapter;
-            if (Utilities.ATLEAST_T) {
+            if (Utilities.ATLEAST_S_V2) {
                 adapter = new RemoteAnimationAdapter(
                         animationRunner, 300, 150,
                         ActivityThread.currentActivityThread().getApplicationThread());

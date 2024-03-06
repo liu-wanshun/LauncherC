@@ -120,6 +120,9 @@ public final class Utilities {
     public static final boolean ATLEAST_S = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
 
     @ChecksSdkIntAtLeast(api = VERSION_CODES.TIRAMISU, codename = "T")
+    public static final boolean ATLEAST_S_V2 = Build.VERSION.SDK_INT >= VERSION_CODES.S_V2;
+
+    @ChecksSdkIntAtLeast(api = VERSION_CODES.TIRAMISU, codename = "T")
     public static final boolean ATLEAST_T = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU;
 
     /**

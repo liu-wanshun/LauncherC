@@ -38,6 +38,7 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.Surface;
 
@@ -362,7 +363,12 @@ public class DeviceProfile {
                 // When depth is 0, wallpaper zoom is set to maxWallpaperScale.
                 // When depth is 1, wallpaper zoom is set to 1.
                 // For depth to achieve zoom set to maxWallpaperScale * workspaceContentScale:
-                float maxWallpaperScale = res.getFloat(R.dimen.config_wallpaperMaxScale);
+                float maxWallpaperScale = 0;
+                try {
+                    maxWallpaperScale = res.getFloat(R.dimen.config_wallpaperMaxScale);
+                } catch (Throwable throwable) {
+                    Log.w(getClass().getSimpleName(), "DeviceProfile: ", throwable);
+                }
                 bottomSheetDepth = Utilities.mapToRange(maxWallpaperScale * workspaceContentScale,
                         maxWallpaperScale, 1f, 0f, 1f, LINEAR);
             }

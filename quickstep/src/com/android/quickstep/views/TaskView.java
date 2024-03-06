@@ -664,7 +664,7 @@ public class TaskView extends FrameLayout implements Reusable {
      *         second app. {@code false} otherwise
      */
     protected boolean confirmSecondSplitSelectApp() {
-        if (!Utilities.ATLEAST_T) {
+        if (!Utilities.ATLEAST_S_V2) {
             return false;
         }
         int index = getLastSelectedChildTaskIndex();
